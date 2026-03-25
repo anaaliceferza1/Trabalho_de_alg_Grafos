@@ -4,6 +4,7 @@ import numpy as np
 matplotlib.use('TkAgg')  # ou 'Qt5Agg'
 
 import matplotlib.pyplot as plt
+#pip3 install networkx matplotlib numpy
 
 class Dgraphs:
     def __init__(self):
@@ -81,20 +82,13 @@ class Dgraphs:
             else:
                 print("O grafo é um DAG.")
                 break
-
-    def draw_graphs(self):
-        pos = nx.spring_layout(self.graph, seed=42)
-        
-        labels = {node:f"{node}\n{self.graph.nodes()[node]['altitude']}m" for node in self.graph.nodes()}
-        
-        edge_labels = {(u, v):f"{d['weight']:.1f}" for u, v, d in self.graph.edges(data=True)}
-        
-        node_colors = ["orange" if self.graph.nodes()[node]['altitude'] == max(nx.get_node_attributes(self.graph, 'altitude').values()) else "lightblue" for node in self.graph.nodes()]
-        
-        nx.draw(self.graph, pos, with_labels=False, node_color=node_colors, node_size=1500, arrowsize=True)
-        nx.draw_networkx_labels(self.graph, pos, labels=labels)
-        nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels)
-        plt.title("Ilha e seus locais")
+    
+    def show_graphs_png(self):
+        plt.figure()
+        pos = nx.spring_layout(self.graph)
+        nx.draw(self.graph, pos, with_labels=True, node_color="lightblue", edge_color="gray")
+        labels = nx.get_edge_attributes(self.graph, 'weight')
+        nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=labels)
         plt.show()
 
     def show_graph(self):
