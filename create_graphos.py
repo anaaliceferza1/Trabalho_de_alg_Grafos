@@ -6,15 +6,19 @@ matplotlib.use('TkAgg')  # ou 'Qt5Agg'
 import matplotlib.pyplot as plt
 #pip3 install networkx matplotlib numpy
 
-class Diagraphs:
+class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
 
     def create_graphs(self):
-        nodes = input("Digite os nós separados por vírgula: ").split(",")
+        nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
         self.graph.add_nodes_from([n.strip() for n in nodes])
 
-        m = int(input("Quantas arestas? "))
+        for node in self.graph.nodes():
+            altitude = int(input(f"Digite a altitude do vértice(n) {node}: "))
+            self.graph.nodes()[node]['altitude'] = altitude
+
+        m = int(input("Quantas arestas(m)? "))
         for _ in range(m):
             origin, destine = input("Origem->Destino: ").split("->")
             self.graph.add_edge(origin.strip(), destine.strip())
@@ -81,6 +85,5 @@ class Diagraphs:
     def show_graph(self):
         print("\nGrafo:")
         for no in self.graph.nodes():
-            exit_degree = list(self.graph.successors(no)) 
-            entry_degree = list(self.graph.predecessors(no))
-            print(f"{no} -> Sair: {exit_degree}, Entrar: {entry_degree}")
+            neigh = list(self.graph.successors(no)) 
+            print(f"{no} -> Vizinhos: {neigh}")
