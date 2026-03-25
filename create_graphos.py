@@ -4,25 +4,35 @@ matplotlib.use('TkAgg')  # ou 'Qt5Agg'
 
 import matplotlib.pyplot as plt
 
-class Graphs:
+class Diagraphs:
     def __init__(self):
-        self.grafo = nx.Graph()
+        self.graph = nx.DiGraph()
 
     def create_graphs(self):
-        n = int(input("Quantos nós tem o grafo? "))
-
-        for _ in range(n):
-            no = input("Nome do nó: ")
-            self.grafo.add_node(no)
+        nodes = input("Digite os nós separados por vírgula: ").split(",")
+        self.graph.add_nodes_from([n.strip() for n in nodes])
 
         m = int(input("Quantas arestas? "))
-
         for _ in range(m):
-            origin = input("Origem: ")
-            destine = input("Destino: ")
-            self.grafo.add_edge(origin, destine)
+            origin, destine = input("Origem->Destino: ").split("->")
+            self.graph.add_edge(origin.strip(), destine.strip())
 
-    def show_graphs(self):
+    def weight_graph(self):
+        for edge in self.graph.edges():
+            weight = int(input(f"Peso da aresta {edge}: "))
+            self.graph[edge[0]][edge[1]]['weight'] = weight
+    
+    def show_graphs_png(self):
         plt.figure()
-        nx.draw(self.grafo, with_labels=True)
-        plt.savefig("grafo.png")
+        pos = nx.spring_layout(self.graph)
+        nx.draw(self.graph, pos, with_labels=True, node_color="lightblue", edge_color="gray")
+        labels = nx.get_edge_attributes(self.graph, 'weight')
+        nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=labels)
+        plt.show()
+
+    def show_graph(self):
+        print("\nGrafo:")
+        for no in self.graph.nodes():
+            exit_degree = list(self.graph.successors(no)) 
+            entry_degree = list(self.graph.predecessors(no))
+            print(f"{no} -> Sair: {exit_degree}, Entrar: {entry_degree}")
