@@ -1,17 +1,18 @@
 import networkx as nx
 import matplotlib
 import numpy as np
-matplotlib.use('TkAgg')  # ou 'Qt5Agg'
+from agents.Cops import Cops
+from agents.Robbers import Robber
+matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
-#pip3 install networkx matplotlib numpy
+
 
 class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
-
-        self.thief = None
-        self.police = []
+        self.thief = Robber()
+        self.police = Cops()
         self.ports = []
         self.thief_log =[]
         self.police_log =[]
@@ -33,7 +34,7 @@ class Dgraphs:
             origin, destine = input("Origem->Destino: ").split("->")
             self.graph.add_edge(origin.strip(), destine.strip())
   
-        self.thief = input("Posição incial do ladrão: ").strip()
+        self.weight_graph()
         #-> lembrando que é pra arrumar isso pq é 6 portos (apenas)
         self.ports = [p.strip() for p in input("Portos(): ").split(",")]
         self.police = [p.strip() for p in input("Policia: ").split(",")]
@@ -42,7 +43,17 @@ class Dgraphs:
         self.thief_log.append(self.thief)
         for i, p in enumerate(self.police):
             self.police_log[i] = [p]
-        
+    
+
+    def ver_agents_nodes(self):
+        for node in self.graph.nodes():
+            if node in self.police:
+                self.graph.nodes()[node]['agent'] = 'police'
+            elif node == self.thief:
+                self.graph.nodes()[node]['agent'] = 'thief'
+            else:
+                self.graph.nodes()[node]['agent'] = None
+
     def weight_graph(self):
         for v in self.graph.nodes():
             for u in self.graph.successors(v):

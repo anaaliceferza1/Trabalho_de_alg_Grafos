@@ -1,9 +1,10 @@
 import networkx as nx
-from Create_graphos import Dgraphs
+from graph.Create_graphos import Dgraphs
 
 class Cops:
-    def __init__(self, name):
+    def __init__(self, name = None, graph = None):
         self.name = name
+        self.graph = graph
 
     def arrest(self, suspect):
         print(f"{self.name} has arrested {suspect}.")
