@@ -12,10 +12,13 @@ class Dgraphs:
 
         self.thief = None
         self.police = []
+        self.ports = []
+        self.thief_log =[]
+        self.police_log =[]
 
         self.loser = False
         self.winner = False
-        self. step = 0
+        self.steps = 0
 
     def create_graphs(self):
         nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
@@ -25,11 +28,21 @@ class Dgraphs:
             altitude = int(input(f"Digite a altitude do vértice(n) {node}: "))
             self.graph.nodes()[node]['altitude'] = altitude
 
-        m = int(input("Quantas arestas(m)? "))
+        m = int(input("Digite quantidade de arestas(m): "))
         for _ in range(m):
             origin, destine = input("Origem->Destino: ").split("->")
             self.graph.add_edge(origin.strip(), destine.strip())
+  
+        self.thief = input("Posição incial do ladrão: ").strip()
+        #-> lembrando que é pra arrumar isso pq é 6 portos (apenas)
+        self.ports = [p.strip() for p in input("Portos(): ").split(",")]
+        self.police = [p.strip() for p in input("Policia: ").split(",")]
 
+        #inicialização do nosso historico:
+        self.thief_log.append(self.thief)
+        for i, p in enumerate(self.police):
+            self.police_log[i] = [p]
+        
     def weight_graph(self):
         for v in self.graph.nodes():
             for u in self.graph.successors(v):
@@ -84,6 +97,19 @@ class Dgraphs:
             else:
                 self.graph.remove_edge(*cycle_edge)
 
+    def report_example(self):
+        '''
+        Destinado ao relatorio do jogo
+        Qualquer ideia ir adicionando...
+
+        '''
+        print("-x-x-x-x--Relatorio--x-x-x-x-")
+        if self.winner:
+            print("->A fulga foi um sucesso !!!")
+        else:
+            print("-> O ladrao foi pego...")
+
+              
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
         
