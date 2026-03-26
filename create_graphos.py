@@ -10,6 +10,13 @@ class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
 
+        self.thief = None
+        self.police = []
+
+        self.loser = False
+        self.winner = False
+        self. step = 0
+
     def create_graphs(self):
         nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
         self.graph.add_nodes_from([n.strip() for n in nodes])
@@ -36,53 +43,47 @@ class Dgraphs:
                         w = diff/2
                         self.graph.edges[edge]['weight'] = w
         
-        self.check_dag()
+        self.killing_negative_cycles()
 
-    def check_dag(self):
-        while True:
-            nodes = list(self.graph.nodes())
-            n = len(nodes)
-            if n == 0: break
+# Removi a ultima função e adicionei a versão (apenas de verificação) junto com o Bellman pq fica mais otimizado :C
+    def bellman_ford(self, source):
+        dist = {v: float('inf') for v in self.graph.nodes()}
+        prev = {v: None for v in self.graph.nodes()}
 
-            adj = nx.to_dict_of_dicts(self.graph)
-            c = np.full((n + 1, n + 1), float('inf'))
-            c[0, 0] = 0
+        dist[source] = 0
 
-            idx_to_node = {i+1: node for i, node in enumerate(nodes)}
-            node_to_idx = {node: i+1 for i, node in enumerate(nodes)}
-            for l in range(1, n + 1):
-                for k in range(n + 1):
-                    val_min = c[l-1, k]
-                    
-                    for i in range(n + 1):
-                        weight = None
-                        if i == 0 and k > 0: 
-                            weight = 0
-                        elif i > 0 and k > 0:
-                            u_name, v_name = idx_to_node[i], idx_to_node[k]
-                            if self.graph.has_edge(u_name, v_name):
-                                weight = self.graph[u_name][v_name].get('weight', 0)
-                        
-                        if weight is not None:
-                            val_min = min(val_min, c[l-1, i] + weight)
-                    
-                    c[l, k] = val_min
-                    
-            cycle_node_idx = None
-            for k in range(1, n + 1):
-                if c[n, k] != c[n-1, k]:
-                    cycle_node_idx = k
-                    break
-            
-            if cycle_node_idx:
-                node_name = idx_to_node[cycle_node_idx]
-                edge_to_remove = list(self.graph.in_edges(node_name))[0]
-                print(f"->Ciclo detectado:'{node_name}'. Removendo {edge_to_remove}")
-                self.graph.remove_edge(*edge_to_remove)
-            else:
-                print("O grafo é um DAG.")
+        for _ in range(len(self.graph.nodes())-1):
+            updated = False
+            for u,v,data in self.graph.edges(data=True):
+                if 'weight' not in data: 
+                    print("Aresta sem peso", u, v)
+
+                w = data['weight']
+                if (dist[u] + w) < dist[v]:
+                    dist[v] = dist[u] + w
+                    prev[v] = u
+                    updated = True
+            if not updated:
                 break
+        for u,v,data in self.graph.edges(data=True):
+            w = data['weight']
+            if dist[u] + w < dist[v]:
+                return dist,prev,(u,v)
+        
+        return dist, prev, None
     
+    def killing_negative_cycles(self):
+        '''
+        So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
+
+        '''
+        while True:
+            dist, prev,cycle_edge =  self.bellman_ford(next(iter(self.graph.nodes())))
+            if not cycle_edge:
+                break
+            else:
+                self.graph.remove_edge(*cycle_edge)
+
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
         
