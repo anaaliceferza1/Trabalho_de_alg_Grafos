@@ -13,7 +13,7 @@ class Port:
         ) 
         
         self.ports = sorted_nodes[:6]
-        print(f"The ports are located at: {', '.join(self.ports)}.")
+        print(f"Os portos estão localizados em: {', '.join(self.ports)}.")
 
         for port in self.ports:
             self.graph.graph.nodes()[port]['agent'] = 'port'
@@ -27,7 +27,7 @@ class Port:
             if edge[1] in self.ports:
                 entry_edge += self.graph.graph.edges[edge]['weight']
         
-        print(f"The total entry degree of the ports is: {entry_edge}.")
+        print(f"A o grau de entrada dos portos é: {entry_edge}.")
 
         return entry_edge
 

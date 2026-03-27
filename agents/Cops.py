@@ -11,18 +11,17 @@ class Cops:
         self.ports = Port()
 
     def arrest(self, suspect):
-        print(f"{self.name} has arrested {suspect}.")
+        print(f"{self.name} prendeu {suspect}.")
 
     def patrol(self):
-        print(f"{self.name} is patrolling the area.")
+        print(f"{self.name} estah patrulhando a area.")
     
     def cops_quantity(self, number):
-        print(f"{self.name} has {number} officers on duty.")
+        print(f"{self.name} has {number} estao patrulhando.")
 
-    def number_of_cops(self, graph, number):
-        entrey_degree = self.ports.entry_degree()
+    def number_of_cops(self, number, entrey_degree):
         cops_needes = number
         if cops_needes > entrey_degree:
-            raise ValueError(f"Number of cops needed ({cops_needes}) exceeds the total entry degree of the ports ({entrey_degree}).")
+            raise ValueError(f"Numero de policiais necessarios ({cops_needes}) nao pode ser maior que: {entrey_degree}.")
         else:
-            print(f"Number of cops needed: {cops_needes}.")
+            print(f"Numero de policiais necessarios: {cops_needes}.")

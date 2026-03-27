@@ -14,9 +14,9 @@ import matplotlib.pyplot as plt
 class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
-        self.thief = Robber()
-        self.police = Cops()
-        self.ports = Port()
+        self.thief = None
+        self.police = None
+        self.ports = None
         self.thief_log =[]
         self.police_log =[]
 
@@ -38,24 +38,34 @@ class Dgraphs:
             self.graph.add_edge(origin.strip(), destine.strip())
   
         self.weight_graph()
-    
-        self.thief.position(self.graph)
-        ports_nodes = self.ports.position(self.graph)
-        self.ports.entry_degree(self.graph)
 
-        while True:
-            try:
-                num_cops = int(input("Digite o número de policiais: "))
-                self.police.number_of_cops(self.graph, num_cops)
-                break
-            except ValueError as e:
-                print(e)
+        self.add_agents()
 
         #inicialização do nosso historico:
         self.thief_log.append(self.thief)
         for i, p in enumerate(self.police):
             self.police_log[i] = [p]
     
+    def add_agents(self):
+
+        if not self.graph.nodes():
+            raise ValueError("O grafo deve conter vértices para adicionar os agentes.")
+
+        self.thief = Robber(graph=self.graph)
+        self.police = Cops(graph=self.graph)
+        self.ports = Port(graph=self.graph)
+
+        self.thief.position()
+        ports_nodes = self.ports.position()
+        entrey_degree = self.ports.entry_degree()
+
+        while True:
+            try:
+                num_cops = int(input("Digite o número de policiais: "))
+                self.police.number_of_cops(self.graph, num_cops, entrey_degree)
+                break
+            except ValueError as e:
+                print(e)
 
     def ver_agents_nodes(self):
         for node in self.graph.nodes():
