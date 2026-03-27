@@ -1,18 +1,22 @@
 import networkx as nx
 import matplotlib
 import numpy as np
-matplotlib.use('TkAgg')  # ou 'Qt5Agg'
+
+from agents.Cops import Cops
+from agents.Robbers import Robber
+from agents.Ports import Port
+
+matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
-#pip3 install networkx matplotlib numpy
+
 
 class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
-
         self.thief = None
-        self.police = []
-        self.ports = []
+        self.police = None
+        self.ports = None
         self.thief_log =[]
         self.police_log =[]
 
@@ -33,16 +37,45 @@ class Dgraphs:
             origin, destine = input("Origem->Destino: ").split("->")
             self.graph.add_edge(origin.strip(), destine.strip())
   
-        self.thief = input("Posição incial do ladrão: ").strip()
-        #-> lembrando que é pra arrumar isso pq é 6 portos (apenas)
-        self.ports = [p.strip() for p in input("Portos(): ").split(",")]
-        self.police = [p.strip() for p in input("Policia: ").split(",")]
+        self.weight_graph()
+
+        self.add_agents()
 
         #inicialização do nosso historico:
         self.thief_log.append(self.thief)
         for i, p in enumerate(self.police):
             self.police_log[i] = [p]
-        
+    
+    def add_agents(self):
+
+        if not self.graph.nodes():
+            raise ValueError("O grafo deve conter vértices para adicionar os agentes.")
+
+        self.thief = Robber(graph=self.graph)
+        self.police = Cops(graph=self.graph)
+        self.ports = Port(graph=self.graph)
+
+        self.thief.position()
+        ports_nodes = self.ports.position()
+        entrey_degree = self.ports.entry_degree()
+
+        while True:
+            try:
+                num_cops = int(input("Digite o número de policiais: "))
+                self.police.number_of_cops(self.graph, num_cops, entrey_degree)
+                break
+            except ValueError as e:
+                print(e)
+
+    def ver_agents_nodes(self):
+        for node in self.graph.nodes():
+            if node in self.police:
+                self.graph.nodes()[node]['agent'] = 'police'
+            elif node == self.thief:
+                self.graph.nodes()[node]['agent'] = 'thief'
+            else:
+                self.graph.nodes()[node]['agent'] = None
+
     def weight_graph(self):
         for v in self.graph.nodes():
             for u in self.graph.successors(v):
@@ -59,31 +92,7 @@ class Dgraphs:
         self.killing_negative_cycles()
 
 # Removi a ultima função e adicionei a versão (apenas de verificação) junto com o Bellman pq fica mais otimizado :C
-    def bellman_ford(self, source):
-        dist = {v: float('inf') for v in self.graph.nodes()}
-        prev = {v: None for v in self.graph.nodes()}
-
-        dist[source] = 0
-
-        for _ in range(len(self.graph.nodes())-1):
-            updated = False
-            for u,v,data in self.graph.edges(data=True):
-                if 'weight' not in data: 
-                    print("Aresta sem peso", u, v)
-
-                w = data['weight']
-                if (dist[u] + w) < dist[v]:
-                    dist[v] = dist[u] + w
-                    prev[v] = u
-                    updated = True
-            if not updated:
-                break
-        for u,v,data in self.graph.edges(data=True):
-            w = data['weight']
-            if dist[u] + w < dist[v]:
-                return dist,prev,(u,v)
-        
-        return dist, prev, None
+    
     
     def killing_negative_cycles(self):
         '''

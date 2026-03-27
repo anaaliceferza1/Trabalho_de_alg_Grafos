@@ -1,4 +1,4 @@
-from create_graphos import Dgraphs
+from graph.Create_graphos import Dgraphs
 import networkx as nx3
 import matplotlib
 import numpy as np
