@@ -1,8 +1,11 @@
 import networkx as nx
 import matplotlib
 import numpy as np
+
 from agents.Cops import Cops
 from agents.Robbers import Robber
+from agents.Ports import Port
+
 matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
@@ -13,7 +16,7 @@ class Dgraphs:
         self.graph = nx.DiGraph()
         self.thief = Robber()
         self.police = Cops()
-        self.ports = []
+        self.ports = Port()
         self.thief_log =[]
         self.police_log =[]
 
@@ -35,9 +38,18 @@ class Dgraphs:
             self.graph.add_edge(origin.strip(), destine.strip())
   
         self.weight_graph()
-        #-> lembrando que é pra arrumar isso pq é 6 portos (apenas)
-        self.ports = [p.strip() for p in input("Portos(): ").split(",")]
-        self.police = [p.strip() for p in input("Policia: ").split(",")]
+    
+        self.thief.position(self.graph)
+        ports_nodes = self.ports.position(self.graph)
+        self.ports.entry_degree(self.graph)
+
+        while True:
+            try:
+                num_cops = int(input("Digite o número de policiais: "))
+                self.police.number_of_cops(self.graph, num_cops)
+                break
+            except ValueError as e:
+                print(e)
 
         #inicialização do nosso historico:
         self.thief_log.append(self.thief)
