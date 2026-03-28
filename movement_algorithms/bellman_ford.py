@@ -9,7 +9,7 @@ def bellman_ford(self, source):
             for u,v,data in self.graph.edges(data=True):
                 if 'weight' not in data: 
                     print("Aresta sem peso", u, v)
-
+            
                 w = data['weight']
                 if (dist[u] + w) < dist[v]:
                     dist[v] = dist[u] + w
