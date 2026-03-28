@@ -6,6 +6,8 @@ from agents.Cops import Cops
 from agents.Robbers import Robber
 from agents.Ports import Port
 
+from movement_algorithms.bellman_ford import bellman_ford
+
 matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
@@ -26,8 +28,16 @@ class Dgraphs:
         self.steps = 0
 
     def create_graphs(self):
-        nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
-        self.graph.add_nodes_from([n.strip() for n in nodes])
+        while True:
+            try:
+                nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
+                if len(nodes)<6:
+                    print("O número de vértices deve ser pelo menos 6 para acomodar os portos.")
+                    continue
+                self.graph.add_nodes_from([n.strip() for n in nodes])
+                break
+            except ValueError:
+                print("Entrada inválida. Por favor, digite novamente.")
 
         for node in self.graph.nodes():
             altitude = int(input(f"Digite a altitude do vértice(n) {node}: "))
@@ -62,8 +72,8 @@ class Dgraphs:
                 break
             except ValueError as e:
                 print(e)
-    
-        self.thief_log.append(self.thief.castale)
+
+        self.thief_log.append(self.thief.position)
         for p in self.police.positions:
             self.police_log.append([p])
 
@@ -96,7 +106,7 @@ class Dgraphs:
         So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
         '''
         while True:
-            dist, prev,cycle_edge =  self.bellman_ford(next(iter(self.graph.nodes())))
+            dist, prev,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
             if not cycle_edge:
                 break
             else:
@@ -106,7 +116,7 @@ class Dgraphs:
         '''
         Destinado ao relatorio do jogo
         Qualquer ideia ir adicionando...
-    
+
         '''
         print("-x-x-x-x--Relatorio--x-x-x-x-")
         if self.winner:
