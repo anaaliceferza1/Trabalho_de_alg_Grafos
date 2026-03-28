@@ -1,10 +1,14 @@
 
 
 def bellman_ford(self, start_node):
-    dist = {v: float('inf') for v in self.graph.nodes()}
-    prev = {v: None for v in self.graph.nodes()}
+    cust = {}
+    prev = {}
 
-    dist[start_node] = 0
+    for node in self.graph.nodes():
+        cust[node] = float('inf')
+        prev[node] = None
+
+    cust[start_node] = 0
 
     for _ in range(len(self.graph.nodes())-1):
         updated = False
@@ -14,8 +18,8 @@ def bellman_ford(self, start_node):
 
             w = data['weight']
 
-            if (dist[u] + w) < dist[v]:
-                dist[v] = dist[u] + w
+            if (cust[u] + w) < cust[v]:
+                cust[v] = cust[u] + w
                 prev[v] = u
                 updated = True
         if not updated:
@@ -24,17 +28,17 @@ def bellman_ford(self, start_node):
     for u, v, data in self.graph.edges(data=True):
         if 'weight' not in data:
             continue
-        if dist[u] + data['weight'] < dist[v]:
-            return dist, prev, (u, v)
+        if cust[u] + data['weight'] < cust[v]:
+            return cust, prev, (u, v)
         
-    return dist, prev, None
+    return cust, prev, None
 
 def killing_negative_cycles(self):
         '''
         So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
         '''
         while True:
-            dist, prev,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
+            _, _,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
             if not cycle_edge:
                 break
             else:
