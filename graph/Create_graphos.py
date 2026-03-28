@@ -73,7 +73,7 @@ class Dgraphs:
             except ValueError as e:
                 print(e)
 
-        self.thief_log.append(self.thief.castale)
+        self.thief_log.append(self.thief.position)
         for p in self.police.positions:
             self.police_log.append([p])
 
