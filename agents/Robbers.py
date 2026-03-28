@@ -1,4 +1,11 @@
+from sys import path
+
 from graph.Create_graphos import Dgraphs
+
+from agents.Cops import Cops
+from agents.Ports import Port
+from movement_algorithms.bellman_ford import bellman_ford
+
 import networkx as nx   
 
 class Robber:
@@ -8,13 +15,7 @@ class Robber:
     
     def steal(self):
         print("O ladrao esta roubando!")
-
-    def starting_position(self, graph):
         
-        self.castale = max(self.graph.nodes(), key=lambda n: self.graph.nodes[n]['altitude']) #define o castelo como o vértice de maior altitude
-       
-        print(f"O ladrao esta no {castale}.")
 
-        graph.graph.nodes()[castale]['agent'] = 'thief'
-       
-    #def move(self, graph, destination):      
+        
+

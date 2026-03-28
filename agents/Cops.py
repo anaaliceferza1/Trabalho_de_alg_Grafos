@@ -38,5 +38,7 @@ class Cops:
         nodes = list(self.graph.nodes())
         self.positions = nodes[:number]
 
-        for p in self.positions:
-            self.graph.nodes[p]['agent'] = 'police'
+        for c in self.positions:
+            self.graph.nodes[c]['agent'] = 'police'
+
+        
