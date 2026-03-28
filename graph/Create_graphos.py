@@ -6,6 +6,8 @@ from agents.Cops import Cops
 from agents.Robbers import Robber
 from agents.Ports import Port
 
+from movement_algorithms.bellman_ford import bellman_ford
+
 matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
@@ -13,7 +15,6 @@ import matplotlib.pyplot as plt
 def ver_qtd_polices(qtd_polices):
     if qtd_polices <= 0:
         raise ValueError("Número de police_positions deve ser positivo.")  
-
 
 class Dgraphs:
     def __init__(self):
@@ -28,6 +29,7 @@ class Dgraphs:
         self.loser = False
         self.winner = False
         self.steps = 0
+
 
     def create_graphs(self, file_name):
 
@@ -125,21 +127,7 @@ class Dgraphs:
                         self.graph.edges[edge]['weight'] = w
         
         self.killing_negative_cycles()
-
-# Removi a ultima função e adicionei a versão (apenas de verificação) junto com o Bellman pq fica mais otimizado :C
     
-    
-    def killing_negative_cycles(self):
-        '''
-        So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
-        '''
-        while True:
-            dist, prev,cycle_edge =  self.bellman_ford(next(iter(self.graph.nodes())))
-            if not cycle_edge:
-                break
-            else:
-                self.graph.remove_edge(*cycle_edge)
-
     def report_example(self):
         '''
         Destinado ao relatorio do jogo
@@ -149,11 +137,15 @@ class Dgraphs:
         print("-x-x-x-x--Relatorio--x-x-x-x-")
         if self.winner:
             print("->A fulga foi um sucesso !!!")
-        else:
+        elif self.loser:
             print("-> O ladrao foi pego...")
+        else:
+            print("Fim de Simulação")
         
+        print("Caminho percorrido pelo bandido: ")
+        print("".join(self.thief_log ))
 
-
+        print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
@@ -175,4 +167,3 @@ class Dgraphs:
         for no in self.graph.nodes():
             neigh = list(self.graph.successors(no)) 
             print(f"{no} -> Vizinhos: {neigh}")
-            

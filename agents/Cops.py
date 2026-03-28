@@ -9,7 +9,7 @@ class Cops:
     def __init__(self, name = None, graph = None):
         self.graph = graph
         self.positions = []
-        self.ports = Port()
+        self.police_team = None
 
     def arrest(self, suspect):
         print(f"{self.name} prendeu {suspect}.")
@@ -38,5 +38,12 @@ class Cops:
         nodes = list(self.graph.nodes())
         self.positions = nodes[:number]
 
-        for p in self.positions:
-            self.graph.nodes[p]['agent'] = 'police'
+        for c in self.positions:
+            self.graph.nodes[c]['agent'] = 'police'
+    
+    def police_vehicle():
+
+        print("viatura criada")
+        
+
+        
