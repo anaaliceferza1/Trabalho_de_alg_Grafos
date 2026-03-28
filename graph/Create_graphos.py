@@ -12,7 +12,6 @@ matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 
-
 class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
@@ -100,15 +99,7 @@ class Dgraphs:
                         self.graph.edges[edge]['weight'] = w
         
         self.killing_negative_cycles()
-      
-    def killing_negative_cycles(self):
-        while True:
-            dist, prev,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
-            if not cycle_edge:
-                break
-            else:
-                self.graph.remove_edge(*cycle_edge)
-
+    
     def report_example(self):
         '''
         Destinado ao relatorio do jogo

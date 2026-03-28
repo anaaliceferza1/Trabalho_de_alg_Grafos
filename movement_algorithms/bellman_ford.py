@@ -1,3 +1,5 @@
+
+
 def bellman_ford(self, start_node):
     dist = {v: float('inf') for v in self.graph.nodes()}
     prev = {v: None for v in self.graph.nodes()}
@@ -26,6 +28,18 @@ def bellman_ford(self, start_node):
             return dist, prev, (u, v)
         
     return dist, prev, None
+
+def killing_negative_cycles(self):
+        '''
+        So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
+        '''
+        while True:
+            dist, prev,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
+            if not cycle_edge:
+                break
+            else:
+                self.graph.remove_edge(*cycle_edge)
+
 
 def reconstruct_paths(self, prev, start_node, destination):
     path = []
