@@ -102,9 +102,6 @@ class Dgraphs:
         self.killing_negative_cycles()
       
     def killing_negative_cycles(self):
-        '''
-        So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
-        '''
         while True:
             dist, prev,cycle_edge =  bellman_ford(next(iter(self.graph.nodes())))
             if not cycle_edge:
