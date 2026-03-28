@@ -1,6 +1,7 @@
 
+from graph.Create_graphos import Dgraphs
 
-def bellman_ford(self, start_node):
+def bellman_ford(Dgraphs, start_node):
     dist = {v: float('inf') for v in self.graph.nodes()}
     prev = {v: None for v in self.graph.nodes()}
 

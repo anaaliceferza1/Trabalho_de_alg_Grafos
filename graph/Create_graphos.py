@@ -7,6 +7,7 @@ from agents.Robbers import Robber
 from agents.Ports import Port
 
 from movement_algorithms.bellman_ford import bellman_ford
+from movement_algorithms.bellman_ford import killing_negative_cycles
 
 matplotlib.use('TkAgg') 
 
@@ -126,7 +127,7 @@ class Dgraphs:
                         w = diff/2
                         self.graph.edges[edge]['weight'] = w
         
-        self.killing_negative_cycles()
+        killing_negative_cycles()
     
     def report_example(self):
         '''
