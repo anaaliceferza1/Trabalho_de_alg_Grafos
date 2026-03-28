@@ -62,7 +62,7 @@ class Dgraphs:
                 break
             except ValueError as e:
                 print(e)
-
+    
         self.thief_log.append(self.thief.castale)
         for p in self.police.positions:
             self.police_log.append([p])
@@ -90,10 +90,7 @@ class Dgraphs:
                         self.graph.edges[edge]['weight'] = w
         
         self.killing_negative_cycles()
-
-# Removi a ultima função e adicionei a versão (apenas de verificação) junto com o Bellman pq fica mais otimizado :C
-    
-    
+      
     def killing_negative_cycles(self):
         '''
         So remove os ciclos negativos encontrados pelo algoritmo do Bellzinho
@@ -109,16 +106,20 @@ class Dgraphs:
         '''
         Destinado ao relatorio do jogo
         Qualquer ideia ir adicionando...
-
+    
         '''
         print("-x-x-x-x--Relatorio--x-x-x-x-")
         if self.winner:
             print("->A fulga foi um sucesso !!!")
-        else:
+        elif self.loser:
             print("-> O ladrao foi pego...")
+        else:
+            print("Fim de Simulação")
         
+        print("Caminho percorrido pelo bandido: ")
+        print("".join(self.thief_log ))
 
-
+        print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 
               
     def draw_graphs(self):
