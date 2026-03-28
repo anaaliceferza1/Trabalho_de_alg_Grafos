@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 class Dgraphs:
     def __init__(self):
         self.graph = nx.DiGraph()
+
         self.thief = None
         self.police = None
         self.ports = None
@@ -40,7 +41,7 @@ class Dgraphs:
 
         for node in self.graph.nodes():
             altitude = int(input(f"Digite a altitude do vértice(n) {node}: "))
-            self.graph.nodes()[node]['altitude'] = altitude
+            self.graph.nodes[node]['altitude'] = altitude
 
         m = int(input("Digite quantidade de arestas(m): "))
         for _ in range(m):
@@ -48,13 +49,7 @@ class Dgraphs:
             self.graph.add_edge(origin.strip(), destine.strip())
   
         self.weight_graph()
-
         self.add_agents()
-
-        #inicialização do nosso historico:
-        self.thief_log.append(self.thief)
-        for i, p in enumerate(self.police):
-            self.police_log[i] = [p]
     
     def add_agents(self):
 
@@ -65,7 +60,8 @@ class Dgraphs:
         self.police = Cops(graph=self.graph)
         self.ports = Port(graph=self.graph)
 
-        self.thief.position()
+        self.thief.starting_position()
+        
         ports_nodes = self.ports.position()
         entrey_degree = self.ports.entry_degree()
 
@@ -76,6 +72,10 @@ class Dgraphs:
                 break
             except ValueError as e:
                 print(e)
+
+        self.thief_log.append(self.thief.castale)
+        for p in self.police.positions:
+            self.police_log.append([p])
 
     def ver_agents_nodes(self):
         for node in self.graph.nodes():
@@ -126,6 +126,9 @@ class Dgraphs:
             print("->A fulga foi um sucesso !!!")
         else:
             print("-> O ladrao foi pego...")
+        
+
+
 
               
     def draw_graphs(self):
