@@ -4,7 +4,8 @@ from graph.Create_graphos import Dgraphs
 
 from agents.Cops import Cops
 from agents.Ports import Port
-from movement_algorithms.bellman_ford import bellman_ford
+from movement_algorithms.bellman_ford import Bellman_ford
+from movement_algorithms.bellman_ford import reconstruct_paths
 
 import networkx as nx   
 
@@ -13,11 +14,17 @@ class Robber:
         self.graph = graph
         self.position = None
     
+    #ja que agora vai ser passado
+    def starting_position(self, start_node):
+        self.position = start_node
+        self.graph.nodes[start_node]['agent'] = 'thief'
+    
     def steal(self):
         print("O ladrao esta roubando!")
 
     def move(self):
-        distances, predecessors = bellman_ford(self.graph, self.position)
+        bf = Bellman_ford(self.graph)
+        distances, predecessors = bf.alg_bellman_ford(self.graph, self.position)
 
         if distances is None or predecessors is None:
             print("Não foi possível calcular os caminhos mais curtos.")
@@ -33,7 +40,7 @@ class Robber:
         paths_sorted = sorted(ports, key=lambda p: distances[p])
 
         for port in paths_sorted:
-            path = nx.reconstruct_path(predecessors, self.position, port)
+            path = reconstruct_paths(predecessors, self.position, port)
             
             if len(path) <= 1:
                 continue
@@ -51,8 +58,7 @@ class Robber:
         print("Todos os caminhos estão bloqueados. O ladrão perdeu")
         return None
 
-      
-    
+
 
         
 

@@ -6,13 +6,9 @@ class Port:
         self.graph = graph
         self.ports = []
 
-    def position(self):
-        sorted_nodes = sorted(
-            self.graph.nodes(),
-            key=lambda n: self.graph.graph.nodes()[n]['altitude']
-        ) 
+    def position(self, ports_nodes ):
+        self.ports = ports_nodes
         
-        self.ports = sorted_nodes[:6]
         print(f"Os portos estão localizados em: {', '.join(self.ports)}.")
 
         for port in self.ports:

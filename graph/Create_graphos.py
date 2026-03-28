@@ -7,10 +7,15 @@ from agents.Robbers import Robber
 from agents.Ports import Port
 
 from movement_algorithms.bellman_ford import bellman_ford
+from movement_algorithms.bellman_ford import killing_negative_cycles
 
 matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
+    
+def ver_qtd_polices(qtd_polices):
+    if qtd_polices <= 0:
+        raise ValueError("Número de police_positions deve ser positivo.")  
 
 class Dgraphs:
     def __init__(self):
@@ -26,55 +31,77 @@ class Dgraphs:
         self.winner = False
         self.steps = 0
 
-    def create_graphs(self):
-        while True:
-            try:
-                nodes = input("Digite os vértices(n) separados por vírgula: ").split(",")
-                if len(nodes)<6:
-                    print("O número de vértices deve ser pelo menos 6 para acomodar os portos.")
-                    continue
-                self.graph.add_nodes_from([n.strip() for n in nodes])
-                break
-            except ValueError:
-                print("Entrada inválida. Por favor, digite novamente.")
 
-        for node in self.graph.nodes():
-            altitude = int(input(f"Digite a altitude do vértice(n) {node}: "))
-            self.graph.nodes[node]['altitude'] = altitude
+    def create_graphs(self, file_name):
 
-        m = int(input("Digite quantidade de arestas(m): "))
-        for _ in range(m):
-            origin, destine = input("Origem->Destino: ").split("->")
-            self.graph.add_edge(origin.strip(), destine.strip())
-  
+        with open(file_name, "r", encoding="utf-8") as f:
+            row = [l.strip() for l in f if l.strip()]
+        
+        #a quantidade de vertices e arestar
+        n = int(row[0])
+        m = int(row[1])
+
+        edges = []
+        nodes = set()
+
+        #vai pegar as as linhas das arestas e seus pesos
+        for i in range(2, 2 + m):
+            u, v, w = row[i].split()
+            w = int(w)
+
+            edges.append((u, v, w))
+            nodes.add(u)
+            nodes.add(v)
+        
+        #vai adicionar os nós
+        self.graph.add_nodes_from(nodes)
+
+        #adiciona as arestas
+        for u, v, w in edges:
+            self.graph.add_edge(u, v, weight=w)
+
+        self.thief_start = row[2 + m]
+        self.ports_nodes = row[3 + m].split()
+
+        qtd_polices = int(row[4 + m])
+        police_positions = row[5 + m].split()
+
+        if qtd_polices != len(police_positions):
+            raise ValueError("Quantidade de police_positions inconsistente.")
+
         self.weight_graph()
-        self.add_agents()
-    
-    def add_agents(self):
+        self.initialize_agents(qtd_polices, police_positions)
 
-        if not self.graph.nodes():
-            raise ValueError("O grafo deve conter vértices para adicionar os agentes.")
+    
+    def initialize_agents(self, qtd_polices, police_positions ):
+
+        ver_qtd_polices(qtd_polices)
 
         self.thief = Robber(graph=self.graph)
         self.police = Cops(graph=self.graph)
         self.ports = Port(graph=self.graph)
 
-        self.thief.starting_position()
+        self.thief.starting_position(self.thief_start)
+        self.ports.position(self.ports_nodes)
+        self.police.set_positions(police_positions)
         
-        ports_nodes = self.ports.position()
-        entrey_degree = self.ports.entry_degree()
+        entry_degree = self.ports.entry_degree()
 
         while True:
             try:
-                num_cops = int(input("Digite o número de policiais: "))
-                self.police.number_of_cops(self.graph, num_cops, entrey_degree)
+                self.police.number_of_cops(self.graph, qtd_polices, entry_degree)
                 break
             except ValueError as e:
-                print(e)
+                try:
+                    qtd_polices = int(input("Digite um novo número de police_positions: "))
+                    ver_qtd_polices(qtd_polices) 
+                except ValueError:
+                    print("Digite apenas números!")
 
-        self.thief_log.append(self.thief.position)
-        for p in self.police.positions:
-            self.police_log.append([p])
+
+        self.thief_log.append(self.thief.castle)
+        self.police_log.extend(self.police.positions)
+
 
     def ver_agents_nodes(self):
         for node in self.graph.nodes():
@@ -84,6 +111,8 @@ class Dgraphs:
                 self.graph.nodes()[node]['agent'] = 'thief'
             else:
                 self.graph.nodes()[node]['agent'] = None
+
+        
 
     def weight_graph(self):
         for v in self.graph.nodes():
@@ -98,8 +127,7 @@ class Dgraphs:
                         w = diff/2
                         self.graph.edges[edge]['weight'] = w
         
-        self.killing_negative_cycles()
-      
+        killing_negative_cycles()
     
     def report_example(self):
         '''
@@ -120,7 +148,6 @@ class Dgraphs:
 
         print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 
-              
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
         
