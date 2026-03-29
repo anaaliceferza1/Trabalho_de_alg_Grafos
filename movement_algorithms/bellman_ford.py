@@ -5,6 +5,9 @@ class Bellman_ford():
         self.graph = graph
 
     def alg_bellman_ford(self, start_node):
+        '''
+         O relaxamento ta funcionavel
+        '''
         cust = {}
         prev = {}
 
