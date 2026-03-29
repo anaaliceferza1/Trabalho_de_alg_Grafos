@@ -6,8 +6,7 @@ from agents.Cops import Cops
 from agents.Robbers import Robber
 from agents.Ports import Port
 
-from movement_algorithms.bellman_ford import bellman_ford
-from movement_algorithms.bellman_ford import killing_negative_cycles
+from movement_algorithms.bellman_ford import Bellman_ford
 
 matplotlib.use('TkAgg') 
 
@@ -33,9 +32,26 @@ class Dgraphs:
 
 
     def create_graphs(self, file_name):
+        while True:
+            try:
+                with open(file_name, "r", encoding="utf-8") as f:
+                    row = [l.strip() for l in f if l.strip()]
 
-        with open(file_name, "r", encoding="utf-8") as f:
-            row = [l.strip() for l in f if l.strip()]
+                if(len(row) < 6):
+                    print("Arquivo deve conter pelo menos 6 linhas para os dados básicos.")
+                    print("Insira o nome do arquivo correto:")
+                    file_name = input("Insira o nome do seu arquivo:")
+                    continue
+                
+                break
+
+            except FileNotFoundError:
+                print(f"Arquivo {file_name} não encontrado.")
+                return
+            except Exception as e:
+                print(f"Erro ao ler o arquivo {file_name}: {e}")
+                return
+
         
         #a quantidade de vertices e arestar
         n = int(row[0])
@@ -56,9 +72,9 @@ class Dgraphs:
         #vai adicionar os nós
         self.graph.add_nodes_from(nodes)
 
-        #adiciona as arestas
+        #adiciona as arestas e leva em consideração os pesos
         for u, v, w in edges:
-            self.graph.add_edge(u, v, weight=w)
+            self.graph.add_edge(u, v, weight=w, or_weight_=w)
 
         self.thief_start = row[2 + m]
         self.ports_nodes = row[3 + m].split()
@@ -89,7 +105,7 @@ class Dgraphs:
 
         while True:
             try:
-                self.police.number_of_cops(self.graph, qtd_polices, entry_degree)
+                self.police.number_of_cops(qtd_polices, entry_degree)
                 break
             except ValueError as e:
                 try:
@@ -99,7 +115,7 @@ class Dgraphs:
                     print("Digite apenas números!")
 
 
-        self.thief_log.append(self.thief.castle)
+        self.thief_log.append(self.thief.position)
         self.police_log.extend(self.police.positions)
 
 
@@ -115,11 +131,12 @@ class Dgraphs:
         
 
     def weight_graph(self):
+        bf = Bellman_ford(self.graph)
         for v in self.graph.nodes():
             for u in self.graph.successors(v):
                 if v != u:
                     edge = (v, u)
-                    diff = self.graph.nodes()[u]['altitude'] - self.graph.nodes()[v]['altitude']
+                    diff = self.graph.nodes[u]['altitude'] - self.graph.nodes[v]['altitude']
                     if diff > 0:
                         w = diff*2
                         self.graph.edges[edge]['weight'] = w
@@ -127,7 +144,7 @@ class Dgraphs:
                         w = diff/2
                         self.graph.edges[edge]['weight'] = w
         
-        killing_negative_cycles()
+        bf.killing_negative_cycles()
     
     def report_example(self):
         '''

@@ -1,8 +1,4 @@
 import networkx as nx
-from graph.Create_graphos import Dgraphs
-from agents.Robbers import Robber
-from agents.Ports import Port
-
 import math
 
 class Cops:
@@ -10,6 +6,7 @@ class Cops:
         self.graph = graph
         self.positions = []
         self.police_team = None
+        self.name = name if name else "police"
 
     def arrest(self, suspect):
         print(f"{self.name} prendeu {suspect}.")
@@ -22,7 +19,7 @@ class Cops:
 
     def number_of_cops(self, number, entrey_degree):
         cops_needes = number
-
+        #agora so vai validar a quantidade de policiais com base no grau de entrada dos portos e na quantidade de nós do grafo
         n = len(self.graph.nodes())
         floor = math.isqrt(n)
         roof = entrey_degree
@@ -33,13 +30,13 @@ class Cops:
             raise ValueError(f"Numero de equipe de policiais necessarios ({cops_needes}) nao pode ser maior que: {roof}.")
         else:
             print(f"Numero de equipe de policiais necessarios: {cops_needes}.")
-        #Aqui vai posicionar os policiais de forma aleatoria
+        
+    #pra salvar oque foi passado no 
+    def set_positions(self, positions):
+        self.positions = positions
 
-        nodes = list(self.graph.nodes())
-        self.positions = nodes[:number]
-
-        for c in self.positions:
-            self.graph.nodes[c]['agent'] = 'police'
+        for p in positions:
+            self.graph.nodes[p]['agent'] = 'police'
     
     def police_vehicle():
 
