@@ -18,6 +18,7 @@ class Robber:
         from movement_algorithms.bellman_ford import Bellman_ford
 
         bf = Bellman_ford(self.graph)
+
         distances, predecessors = bf.alg_bellman_ford( self.position)
 
         if distances is None or predecessors is None:

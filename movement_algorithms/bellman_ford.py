@@ -1,56 +1,72 @@
+<<<<<<< HEAD
+=======
+from graph.Create_graphos import Dgraphs
+>>>>>>> a734a6cf95c7aa79e9a94342bd9270eda4c2c849
 
 class Bellman_ford():
     def __init__(self, graph):
-        self.graph =  graph
+        self.graph = graph
 
     def alg_bellman_ford(self, start_node):
-        dist = {v: float('inf') for v in self.graph.nodes()}
-        prev = {v: None for v in self.graph.nodes()}
+        '''
+         O relaxamento ta funcionavel
+        ........      
+        '''
+        cust = {}
+        prev = {}
 
-        dist[start_node] = 0
+        for node in self.graph.nodes():
+            cust[node] = float('inf')
+            prev[node] = None
 
-        for _ in range(len(self.graph.nodes())-1):
+        cust[start_node] = 0
+
+        for _ in range(len(self.graph.nodes()) - 1):
             updated = False
-            for u,v,data in self.graph.edges(data=True):
-                if 'weight' not in data: 
+            for u, v, data in self.graph.edges(data=True):
+                if 'weight' not in data:
                     continue
 
                 w = data['weight']
-
-                if (dist[u] + w) < dist[v]:
-                    dist[v] = dist[u] + w
+                if cust[u] + w < cust[v]:
+                    cust[v] = cust[u] + w
                     prev[v] = u
                     updated = True
+
             if not updated:
                 break
-            
+
         for u, v, data in self.graph.edges(data=True):
             if 'weight' not in data:
                 continue
-            if dist[u] + data['weight'] < dist[v]:
-                return dist, prev, (u, v)
-            
-        return dist, prev, None
+
+            if cust[u] + data['weight'] < cust[v]:
+                return cust, prev, (u, v)
+
+        return cust, prev, None
 
     def killing_negative_cycles(self):
-            while True:
-                _, _,cycle_edge =  self.alg_bellman_ford(next(iter(self.graph.nodes())))
-                if not cycle_edge:
-                    break
-                else:
-                    self.graph.remove_edge(*cycle_edge)
+        while True:
+            _, _, cycle_edge = self.alg_bellman_ford(
+                next(iter(self.graph.nodes()))
+            )
 
+            if not cycle_edge:
+                break
+            else:
+                self.graph.remove_edge(*cycle_edge)
 
     def reconstruct_paths(self, prev, start_node, destination):
         path = []
-        aux =  destination
+        aux = destination
 
         while aux is not None:
             path.append(aux)
             aux = prev[aux]
 
-        path = list(reversed(path))
+        path.reverse()
 
         if not path or path[0] != start_node:
             return None
+
         return path

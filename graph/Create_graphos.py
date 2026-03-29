@@ -128,23 +128,22 @@ class Dgraphs:
             else:
                 self.graph.nodes()[node]['agent'] = None
 
-        
-
-    def weight_graph(self):
-        bf = Bellman_ford(self.graph)
-        for v in self.graph.nodes():
-            for u in self.graph.successors(v):
-                if v != u:
-                    edge = (v, u)
-                    diff = self.graph.nodes[u]['altitude'] - self.graph.nodes[v]['altitude']
-                    if diff > 0:
-                        w = diff*2
-                        self.graph.edges[edge]['weight'] = w
-                    else:
-                        w = diff/2
-                        self.graph.edges[edge]['weight'] = w
-        
-        bf.killing_negative_cycles()
+    #Antiga funcao para definir os pesos baseados em altitudes(vista como desnecessaria)
+    # def weight_graph(self):
+    #     for v in self.graph.nodes():
+    #         for u in self.graph.successors(v):
+    #             if v != u:
+    #                 edge = (v, u)
+    #                 diff = self.graph.nodes()[u]['altitude'] - self.graph.nodes()[v]['altitude']
+    #                 if diff > 0:
+    #                     w = diff*2
+    #                     self.graph.edges[edge]['weight'] = w
+    #                 else:
+    #                     w = diff/2
+    #                     self.graph.edges[edge]['weight'] = w
+         
+    #     killing_negative_cycles()
+    
     
     def report_example(self):
         '''
