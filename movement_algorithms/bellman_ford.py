@@ -7,6 +7,7 @@ class Bellman_ford():
     def alg_bellman_ford(self, start_node):
         '''
          O relaxamento ta funcionavel
+        ........      
         '''
         cust = {}
         prev = {}
