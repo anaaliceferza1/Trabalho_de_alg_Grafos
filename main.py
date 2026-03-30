@@ -35,6 +35,46 @@ print("Posiçoes dos policiais\n")
 # file_name = input("Insira o nome do seu arquivo:")
 import os
 
+def game(self):
+    '''
+        inicializa historico de passos 
+        Primeiro o ladrao se move
+        Dps o policial se move(entra em perseguição ).
+        atualiza historido de passos
+        Dps verificamos se o ladrao foi pego ou se escapou.
+
+        '''
+    perseg = False
+    step = 0
+
+    self.thief_log.append(self.thief.position)
+    self.police_log.append(self.police.positions)
+
+    while True:
+        step += 1
+        self.steps = step
+
+        thief_move = self.thief.move()
+
+        if thief_move is not None:
+            self.thief.position = thief_move
+        
+        perseg = True
+
+        self.police.move(self.thief.position, perseg)
+
+        self.thief_log.append(self.thief.position)
+        self.police_log.append(list(self.police.positions))
+        
+        if self.thief.position in self.police.positions:
+            self.loser = True
+            print("O ladrão foi pego! A polícia venceu!")
+            break
+        if self.thief.position in self.ports.ports:
+            self.winner = True
+            print("O ladrão escapou pelos portos! O ladrão venceu!")
+            break
+
 print("Pasta atual:", os.getcwd())
 print("Arquivo existe?", os.path.exists("teste1.txt"))
 file_name= "teste1.txt"
