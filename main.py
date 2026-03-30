@@ -76,10 +76,10 @@ def game_simulation(self):
             print("O ladrão escapou pelos portos! O ladrão venceu!")
             break
 
-print("Pasta atual:", os.getcwd())
-print("Arquivo existe?", os.path.exists("teste1.txt"))
 
 file_name = input("Insira o nome do seu arquivo:")
+print("Pasta atual:", os.getcwd())
+print("Arquivo existe?", os.path.exists("file_name"))
 
 try:
     g = Dgraphs()
