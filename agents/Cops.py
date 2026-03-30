@@ -37,9 +37,6 @@ class Cops:
     def set_positions(self, positions):
         self.positions = positions
 
-        nodes = list(self.graph.nodes())
-        self.positions = nodes[:self.police_team]
-
         for c in self.positions:
             self.graph.nodes[c]['agent'] = 'police'
 
@@ -64,7 +61,7 @@ class Cops:
 
             #se tiver em perseguiçao
             else:
-                distances, predecessors = bf.alg_bellman_ford(self.graph, cop_pos)
+                distances, predecessors, _ = bf.alg_bellman_ford(self.graph, cop_pos)
 
                 if distances is None or predecessors is None:
                     continue

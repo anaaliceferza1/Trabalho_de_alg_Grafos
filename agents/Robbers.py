@@ -19,7 +19,7 @@ class Robber:
 
         bf = Bellman_ford(self.graph)
 
-        distances, predecessors = bf.alg_bellman_ford( self.position)
+        distances, predecessors, _ = bf.alg_bellman_ford( self.position)
 
         if distances is None or predecessors is None:
             print("Não foi possível calcular os caminhos mais curtos.")
