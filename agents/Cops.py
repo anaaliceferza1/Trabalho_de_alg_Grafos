@@ -1,18 +1,13 @@
 import networkx as nx
 import math
 import random
-from movement_algorithms.bellman_ford import Bellman_ford
+
 
 class Cops:
     def __init__(self, graph = None):
         self.graph = graph
         self.positions = []
-
         self.police_team = None
-
-    def add_position(self, pos):
-        self.positions.append(pos)
-
 
     def arrest(self, suspect):
         print(f"{self.name} prendeu {suspect}.")
@@ -23,7 +18,7 @@ class Cops:
     def cops_quantity(self, number):
         print(f"{self.name} has {number} estao patrulhando.")
 
-    def number_of_cops(self, number, entrey_degree):
+    def number_of_cops_valid(self, number, entrey_degree):
         cops_needes = number
         #agora so vai validar a quantidade de policiais com base no grau de entrada dos portos e na quantidade de nós do grafo
         n = len(self.graph.nodes())
@@ -35,6 +30,7 @@ class Cops:
         elif cops_needes > roof:
             raise ValueError(f"Numero de equipe de policiais necessarios ({cops_needes}) nao pode ser maior que: {roof}.")
         else:
+            self.police_team = cops_needes
             print(f"Numero de equipe de policiais necessarios: {cops_needes}.")
         
     #pra salvar oque foi passado no arquivo
@@ -42,12 +38,14 @@ class Cops:
         self.positions = positions
 
         nodes = list(self.graph.nodes())
-        self.positions = nodes[:number]
+        self.positions = nodes[:self.police_team]
 
         for c in self.positions:
             self.graph.nodes[c]['agent'] = 'police'
 
+    #movimentacao tanto em patrulha quanto perseguicao
     def move(self, thief_pos, persecution):
+        from movement_algorithms.bellman_ford import Bellman_ford
 
         bf = Bellman_ford(self.graph)
 
