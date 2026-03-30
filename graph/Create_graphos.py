@@ -7,7 +7,6 @@ from agents.Robbers import Robber
 from agents.Ports import Port
 
 from movement_algorithms.bellman_ford import Bellman_ford
-from movement_algorithms.bellman_ford import killing_negative_cycles
 
 matplotlib.use('TkAgg') 
 
@@ -33,12 +32,32 @@ class Dgraphs:
 
 
     def create_graphs(self, file_name):
+        while True:
+            try:
+                with open(file_name, "r", encoding="utf-8") as f:
+                    row = [l.strip() for l in f if l.strip()]
+                    if int(row[0]) <7:
+                        raise ValueError("Número de vértices deve ser pelo menos 7.")
 
-        with open(file_name, "r", encoding="utf-8") as f:
-            row = [l.strip() for l in f if l.strip()]
+                if(len(row) < 6):
+                    print("Arquivo deve conter pelo menos 6 linhas para os dados básicos.")
+                    print("Insira o nome do arquivo correto:")
+                    file_name = input("Insira o nome do seu arquivo:")
+                    continue
+                
+                break
+
+            except FileNotFoundError:
+                print(f"Arquivo {file_name} não encontrado.")
+                return
+            except Exception as e:
+                print(f"Erro ao ler o arquivo {file_name}: {e}")
+                return
+
         
         #a quantidade de vertices e arestar
         n = int(row[0])
+           
         m = int(row[1])
 
         edges = []
@@ -56,9 +75,9 @@ class Dgraphs:
         #vai adicionar os nós
         self.graph.add_nodes_from(nodes)
 
-        #adiciona as arestas
+        #adiciona as arestas e leva em consideração os pesos
         for u, v, w in edges:
-            self.graph.add_edge(u, v, weight=w)
+            self.graph.add_edge(u, v, weight=w, or_weight_=w)
 
         self.thief_start = row[2 + m]
         self.ports_nodes = row[3 + m].split()
@@ -69,7 +88,6 @@ class Dgraphs:
         if qtd_polices != len(police_positions):
             raise ValueError("Quantidade de police_positions inconsistente.")
 
-        self.weight_graph()
         self.initialize_agents(qtd_polices, police_positions)
 
     
@@ -82,14 +100,14 @@ class Dgraphs:
         self.ports = Port(graph=self.graph)
 
         self.thief.starting_position(self.thief_start)
-        self.ports.position(self.ports_nodes)
+        self.ports.set_position(self.ports_nodes)
         self.police.set_positions(police_positions)
         
         entry_degree = self.ports.entry_degree()
 
         while True:
             try:
-                self.police.number_of_cops(qtd_polices, entry_degree)
+                self.police.number_of_cops(self.graph, qtd_polices, entry_degree)
                 break
             except ValueError as e:
                 try:
