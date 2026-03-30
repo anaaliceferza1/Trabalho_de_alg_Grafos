@@ -92,7 +92,6 @@ class Dgraphs:
 
     
     def initialize_agents(self, qtd_polices, police_positions ):
-
         ver_qtd_polices(qtd_polices)
 
         self.thief = Robber(graph=self.graph)

@@ -1,4 +1,5 @@
 from platform import node
+from movement_algorithms.bellman_ford import Bellman_ford
 import networkx as nx   
 
 class Robber:
@@ -15,19 +16,20 @@ class Robber:
         print("O ladrao esta roubando!")
 
     def move(self):
-        from movement_algorithms.bellman_ford import Bellman_ford
-
         bf = Bellman_ford(self.graph)
 
-        distances, predecessors = bf.alg_bellman_ford(self.position) #ok
+        distances, predecessors, _ = bf.alg_bellman_ford(self.position) #ok
 
         if distances is None or predecessors is None:
             print("Não foi possível calcular os caminhos mais curtos.")
             return
         
-        ports = [port for port in self.graph.nodes() 
-                 if self.graph.nodes[port].get('agent')=='port' and distances[port] != float('inf')]
-        
+        ports = [
+            port for port in self.graph.nodes() 
+            if self.graph.nodes[port].get('agent')=='port' 
+            and distances.get(port, float('inf')) != float('inf')
+        ]
+
         if not ports:
             print("Não há portos disponíveis para o ladrão se mover.")
             return
@@ -37,18 +39,21 @@ class Robber:
         for port in paths_sorted:
             path = bf.reconstruct_paths(predecessors, self.position, port)
             
-            if len(path) <= 1:
-                continue
+            if not path or len(path) <= 1:
+                continue  
 
             next_move = path[1] 
             
             if self.graph.nodes[next_move].get('agent') == 'police':
                 print(f"Caminho para o {port} esta bloqueado.\nO ladrao encontrou um policial em {next_move} e precisa escolher outro caminho.")
-            else:
-                print(f"O ladrao se moveu para {next_move}.")
-                self.position = next_move
+                continue
+            self.graph.nodes[self.position].pop('agent', None)
+            self.position = next_move
+            self.graph.nodes[self.position]['agent'] = 'thief'
 
-                return self.position
+            print(f"O ladrao se moveu para {next_move}.")
+
+            return self.position
             
         print("Todos os caminhos estão bloqueados. O ladrão perdeu")
         return None

@@ -44,11 +44,10 @@ def game_simulation(self):
         Dps verificamos se o ladrao foi pego ou se escapou.
 
         '''
-    perseg = False
     step = 0
 
     self.thief_log.append(self.thief.position)
-    self.police_log.append(self.police.positions)
+    self.police_log.append(list(self.police.positions))
 
     while True:
         step += 1
@@ -57,7 +56,9 @@ def game_simulation(self):
         thief_move = self.thief.move()
 
         if thief_move is not None:
+            self.graph.nodes[self.thief.position]['agent'] = None
             self.thief.position = thief_move
+            self.graph.nodes[thief_move]['agent'] = 'thief'
         
         perseg = True
 
