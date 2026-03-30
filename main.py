@@ -52,19 +52,14 @@ def game_simulation(self):
     while True:
         step += 1
         self.steps = step
-
-        thief_move = self.thief.move()
-
-        if thief_move is not None:
-            self.graph.nodes[self.thief.position]['agent'] = None
-            self.thief.position = thief_move
-            self.graph.nodes[thief_move]['agent'] = 'thief'
-        
-        perseg = True
+        perseg = False
 
         self.police.move(self.thief.position, perseg)
+        
+        thief_move = self.thief.move()
+        perseg = True       
 
-        self.thief_log.append(self.thief.position)
+        self.thief_log.append(thief_move)
         self.police_log.append(list(self.police.positions))
         
         if self.thief.position in self.police.positions:
