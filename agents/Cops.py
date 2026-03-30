@@ -1,6 +1,7 @@
 import networkx as nx
 import math
 import random
+from movement_algorithms.bellman_ford import Bellman_ford
 
 class Cops:
     def __init__(self, graph = None):
@@ -8,7 +9,6 @@ class Cops:
         self.positions = []
 
         self.police_team = None
-        self.name = name if name else "police"
 
     def add_position(self, pos):
         self.positions.append(pos)
