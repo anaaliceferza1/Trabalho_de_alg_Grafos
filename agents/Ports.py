@@ -6,7 +6,7 @@ class Port:
         self.graph = graph
         self.ports = []
 
-    def set_position(self, ports_nodes ):
+    def set_position(self, ports_nodes):
         self.ports = ports_nodes
         
         print(f"Os portos estão localizados em: {', '.join(self.ports)}.")
@@ -14,12 +14,13 @@ class Port:
         for port in self.ports:
             self.graph.nodes[port]['agent'] = 'port'
     
+    #calculo de entrada dos portos corrigida apos teste
     def entry_degree(self):
         entry_edge = 0
 
-        for u, v, data in self.graph.edges(data=True):
-            if v in self.ports:
-                entry_edge += 1
+        for v in self.ports:
+            for u in self.graph.predecessors(v):
+                entry_edge += self.graph[u][v].get('weight', 1)
         
         print(f"O grau de entrada dos portos é: {entry_edge}.")
 
