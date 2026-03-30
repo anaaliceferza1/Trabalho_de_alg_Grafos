@@ -107,7 +107,7 @@ class Dgraphs:
 
         while True:
             try:
-                self.police.number_of_cops(self.graph, qtd_polices, entry_degree)
+                self.police.number_of_cops_valid( qtd_polices, entry_degree)
                 break
 
             except ValueError as e:
@@ -180,18 +180,19 @@ class Dgraphs:
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
         
-        labels = {node:f"{node}\n{self.graph.nodes()[node]['altitude']}m" for node in self.graph.nodes()}
+        # labels = {node:f"{node}\n{self.graph.nodes()[node]['altitude']}m" for node in self.graph.nodes()}
         
         edge_labels = {(u, v):f"{d['weight']:.1f}" for u, v, d in self.graph.edges(data=True)}
         
-        node_colors = ["orange" if self.graph.nodes()[node]['altitude'] == max(nx.get_node_attributes(self.graph, 'altitude').values()) else "lightblue" for node in self.graph.nodes()]
+        # node_colors = ["orange" if self.graph.nodes()[node]['altitude'] == max(nx.get_node_attributes(self.graph, 'altitude').values()) else "lightblue" for node in self.graph.nodes()]
         
-        nx.draw(self.graph, pos, with_labels=False, node_color=node_colors, node_size=1500, arrowsize=True)
-        nx.draw_networkx_labels(self.graph, pos, labels=labels)
+        nx.draw(self.graph, pos, with_labels=False,  node_size=1500, arrowsize=True)
+        nx.draw_networkx_labels(self.graph, pos)
         nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels)
         plt.title("Ilha e seus locais")
         plt.show()
 
+    
     def show_graph(self):
         print("\nGrafo:")
         for no in self.graph.nodes():
