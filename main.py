@@ -35,7 +35,7 @@ print("Posiçoes dos policiais\n")
 # file_name = input("Insira o nome do seu arquivo:")
 import os
 
-def game(self):
+def game_simulation(self):
     '''
         inicializa historico de passos 
         Primeiro o ladrao se move
