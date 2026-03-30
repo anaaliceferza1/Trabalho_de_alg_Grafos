@@ -32,7 +32,7 @@ print("Vértices de saída da ilha")
 print("Quantidade dos policiais\n ")
 print("Posiçoes dos policiais\n")
 
-# file_name = input("Insira o nome do seu arquivo:")
+
 import os
 
 def game_simulation(self):
@@ -77,7 +77,8 @@ def game_simulation(self):
 
 print("Pasta atual:", os.getcwd())
 print("Arquivo existe?", os.path.exists("teste1.txt"))
-file_name= "teste1.txt"
+
+file_name = input("Insira o nome do seu arquivo:")
 
 try:
     g = Dgraphs()
