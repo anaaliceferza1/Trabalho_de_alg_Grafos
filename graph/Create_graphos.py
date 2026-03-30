@@ -107,7 +107,7 @@ class Dgraphs:
 
         while True:
             try:
-                self.police.number_of_cops_valid(qtd_polices, entry_degree)
+                self.police.number_of_cops(self.graph, qtd_polices, entry_degree)
                 break
             except ValueError as e:
                 try:
@@ -149,8 +149,17 @@ class Dgraphs:
     
     def report_example(self):
         '''
-        Destinado ao relatorio do jogo
-        Qualquer ideia ir adicionando...
+        Relatório contendo:
+
+        (ok)A informação de que o ladrão escapou ou se foi preso e em quantas etapas;
+
+        Número de equipes de policiais necessários para prender o ladrão, em caso de sucesso;
+
+        Sequência de vértices visitados pelo prisioneiro;
+
+        Se ocorreu, o momento em que os policiais o alcançaram;
+
+        Caminho percorrido pelos policiais durante a perseguição;
 
         '''
         print("-x-x-x-x--Relatorio--x-x-x-x-")
@@ -162,7 +171,12 @@ class Dgraphs:
             print("Fim de Simulação")
         
         print("Caminho percorrido pelo bandido: ")
-        print("".join(self.thief_log ))
+        print("-> ".join(self.thief_log ))
+
+        #Gente aqui é durante e apenas durante a perseguição
+        print("Caminho percorrido pelos policiais: ")
+        for p, position, in enumerate(self.police_log):
+            print(f"Etapa {p}: {position}")
 
         print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 
