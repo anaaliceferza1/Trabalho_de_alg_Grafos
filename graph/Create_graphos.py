@@ -109,12 +109,9 @@ class Dgraphs:
             try:
                 self.police.number_of_cops_valid(qtd_polices, entry_degree)
                 break
+
             except ValueError as e:
-                try:
-                    qtd_polices = int(input("Digite um novo número de police_positions: "))
-                    ver_qtd_polices(qtd_polices) 
-                except ValueError:
-                    print("Digite apenas números!")
+                print(e)
 
 
         self.thief_log.append(self.thief.position)

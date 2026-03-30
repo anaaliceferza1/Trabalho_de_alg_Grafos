@@ -23,7 +23,7 @@ class Cops:
         #agora so vai validar a quantidade de policiais com base no grau de entrada dos portos e na quantidade de nós do grafo
         n = len(self.graph.nodes())
         floor = math.isqrt(n)
-        roof = abs(entrey_degree)
+        roof = entrey_degree
 
         if cops_needes <= floor:
             raise ValueError(f"Numero de equipe de policiais necessarios ({cops_needes}) nao pode ser menor ou igual a: {floor}.")
