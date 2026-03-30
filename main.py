@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 
 
 # a estrutura do arquivo.
+print("O arquivo tem que esta dentro do mesmo diretorio do main.py:\n")
 print("É esperado que o aquivo tenha apenas numeros e nessa configuração:\n")
 print("Número de vértices |V| = n")
 print("Número de arestas |E| = m")
@@ -31,7 +32,12 @@ print("Vértices de saída da ilha")
 print("Quantidade dos policiais\n ")
 print("Posiçoes dos policiais\n")
 
-file_name = input("Insira o nome do seu arquivo:")
+# file_name = input("Insira o nome do seu arquivo:")
+import os
+
+print("Pasta atual:", os.getcwd())
+print("Arquivo existe?", os.path.exists("teste1.txt"))
+file_name= "teste1.txt"
 
 try:
     g = Dgraphs()

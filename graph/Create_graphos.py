@@ -36,6 +36,8 @@ class Dgraphs:
             try:
                 with open(file_name, "r", encoding="utf-8") as f:
                     row = [l.strip() for l in f if l.strip()]
+                    if int(row[0]) <7:
+                        raise ValueError("Número de vértices deve ser pelo menos 7.")
 
                 if(len(row) < 6):
                     print("Arquivo deve conter pelo menos 6 linhas para os dados básicos.")
@@ -55,6 +57,7 @@ class Dgraphs:
         
         #a quantidade de vertices e arestar
         n = int(row[0])
+           
         m = int(row[1])
 
         edges = []
@@ -85,7 +88,6 @@ class Dgraphs:
         if qtd_polices != len(police_positions):
             raise ValueError("Quantidade de police_positions inconsistente.")
 
-        self.weight_graph()
         self.initialize_agents(qtd_polices, police_positions)
 
     
@@ -98,14 +100,14 @@ class Dgraphs:
         self.ports = Port(graph=self.graph)
 
         self.thief.starting_position(self.thief_start)
-        self.ports.position(self.ports_nodes)
+        self.ports.set_position(self.ports_nodes)
         self.police.set_positions(police_positions)
         
         entry_degree = self.ports.entry_degree()
 
         while True:
             try:
-                self.police.number_of_cops(qtd_polices, entry_degree)
+                self.police.number_of_cops_valid(qtd_polices, entry_degree)
                 break
             except ValueError as e:
                 try:
