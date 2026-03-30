@@ -15,12 +15,13 @@ class Port:
             self.graph.nodes[port]['agent'] = 'port'
     
     #calculo de entrada dos portos corrigida apos teste
+    #testando sem peso 
     def entry_degree(self):
         entry_edge = 0
 
         for v in self.ports:
-            for u in self.graph.predecessors(v):
-                entry_edge += self.graph[u][v].get('weight', 1)
+            for _ in self.graph.predecessors(v):
+                entry_edge += 1
         
         print(f"O grau de entrada dos portos é: {entry_edge}.")
 
