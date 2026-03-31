@@ -147,19 +147,4 @@ class Game:
                         self.criar_relatorio(f"O LADRÃO FOI CAPTURADO NO NÓ {thief_pos}!", f)
                 
                 self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
-                #     #pos_str = str(position)
-                # self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
                 
-                # self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
-
-                # num_police = max(len(etapa) for etapa in graph.police_log)
-
-                # for i in range(num_police):
-                #     caminho = []
-
-                #     for etapa in graph.police_log:
-                #         if i < len(etapa):
-                #             caminho.append(str(etapa[i]))
-                #     self.criar_relatorio(f"Policial {i+1}: " + " -> ".join(caminho), f)
-
-                # self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
