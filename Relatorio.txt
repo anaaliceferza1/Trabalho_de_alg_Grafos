@@ -1,24 +1,5 @@
-   [-x-x-x-x-x-x-x--RELATÓRIO--x-x-x-x-x-x-x-]    STATUS: -> O ladrao foi pego...-> Captura realizada em 4 etapas.
+   [-x-x-x-x-x-x-x--RELATÓRIO--x-x-x-x-x-x-x-]    STATUS: -> O ladrao foi pego...-> Captura realizada em 2 etapas.
 
-<<<<<<< HEAD
--> Número de equipes policiais: 2CAMINHO: percorrido pelo bandido: 1-> 3-> 4-> 5Etapa 00 | Ladrão: 1 | Policiais: [2]Etapa 01 | Ladrão: 3 | Policiais: [3]Etapa 02 | Ladrão: 4 | Policiais: [6, 7]Etapa 03 | Ladrão: 5 | Policiais: [6, 7][-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]
-=======
--> O ladrao foi pego...
-->O ladrão foi pego em 2 etapas.
-Caminho percorrido pelo bandido: 
-1-> 3
-
--> Número de equipes policiais: 2
-Caminho percorrido pelos policiais: 
-Etapa 0: [2]
-Etapa 1: [3]
-Etapa 2: [4, 1]
-Etapa 3: [4, 3]
-Caminho percorrido pelos policiais: 
-Policial 1: 2 -> 3 -> 4 -> 4
-Policial 2: 1 -> 3
-
--> Captura ocorreu na etapa 2 no nó 3
-
--x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
->>>>>>> dcd438ef800db1a32eff50fe19284379b89c69cd
+-> Número de equipes policiais: 2CAMINHO: percorrido pelo bandido: 1-> 3Etapa 00 | Ladrão: 1 | Policiais: [2]
+Etapa 01 | Ladrão: 3 | Policiais: [3]
+[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]
