@@ -29,7 +29,7 @@ class Game:
 
                 if perseg:
                     if graph.thief.position in graph.police.positions:
-                            graph.winner = True
+                            self.winner = True
                             print("O ladrão foi pego! A polícia venceu!")
                             break
                 #
@@ -42,12 +42,17 @@ class Game:
 
                 clear_path = graph.thief.move()
 
+                if clear_path is None:
+                    print("Ladrão não pode se mover. Polícia venceu!")
+                    self.winner = True
+                    break
+
                 if clear_path:
                     graph.thief_log.append(graph.thief.position)
                     perseg = True
                     
                     if graph.thief.position in graph.ports.ports:
-                        graph.loser = True
+                        self.loser = True
                         print("O ladrão escapou pelos portos! O ladrão venceu!")
                         break
                 
@@ -80,7 +85,6 @@ class Game:
                 '''
 
                 self.criar_relatorio("-x-x-x-x--Relatorio--x-x-x-x-",f)
-                print("\n")
 
                 #relatorio ladão
                 if self.loser:
@@ -92,11 +96,9 @@ class Game:
                 else:
                     self.criar_relatorio("Fim de Simulação", f)
 
-                self.criar_relatorio(print("\n"), f)
 
                 self.criar_relatorio("Caminho percorrido pelo bandido: ", f)
                 self.criar_relatorio("-> ".join(graph.thief_log ), f)
-                self.criar_relatorio(print("\n"), f)
 
                 #relatorio policia
                 if graph.police.police_team:
@@ -108,10 +110,9 @@ class Game:
                     self.criar_relatorio(f"Etapa {p}: {position}", f)
 
                 #relatorio da captura
-                if self.loser:
+                if self.winner:
                     for p, positions in enumerate(graph.police_log):
                         if graph.thief_log[p] in positions:
                             self.criar_relatorio(f"\n-> Captura ocorreu na etapa {p} no nó {graph.thief_log[p]}", f)
                             break
-                self.criar_relatorio(print("\n"), f)
                 self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)

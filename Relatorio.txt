@@ -1,12 +1,15 @@
 -x-x-x-x--Relatorio--x-x-x-x-
-Fim de Simulação
+-> O ladrao foi pego...
+->O ladrão foi pego em 2 etapas.
 Caminho percorrido pelo bandido: 
 0-> 0-> 2
--> Número de equipes policiais: 3
+-> Número de equipes policiais: 2
 Caminho percorrido pelos policiais: 
 Etapa 0: 1
 Etapa 1: 2
-Etapa 2: 3
-Etapa 3: ['1', '2', '3']
-Etapa 4: ['4', '3', '1']
+Etapa 2: ['1', '2']
+Etapa 3: ['3', '0']
+Etapa 4: ['3', '2']
+
+-> Captura ocorreu na etapa 2 no nó 2
 -x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
