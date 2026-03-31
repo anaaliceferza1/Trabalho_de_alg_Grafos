@@ -19,8 +19,9 @@ class Port:
     def entry_degree(self):
         entry_edge = 0
 
+        #modificaçao da contagem ja que o grafo nao e mais direcionado
         for v in self.ports:
-            for _ in self.graph.predecessors(v):
+            for _ in self.graph.neighbors(v):
                 entry_edge += 1
         
         print(f"O grau de entrada dos portos é: {entry_edge}.")
