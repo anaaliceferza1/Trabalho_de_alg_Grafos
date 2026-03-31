@@ -1,13 +1,12 @@
 -x-x-x-x--Relatorio--x-x-x-x-
 Fim de Simulação
 Caminho percorrido pelo bandido: 
-0-> 0-> 2-> 8
+0-> 0-> 2
 -> Número de equipes policiais: 3
 Caminho percorrido pelos policiais: 
 Etapa 0: 1
 Etapa 1: 2
 Etapa 2: 3
 Etapa 3: ['1', '2', '3']
-Etapa 4: ['3', '4', '6']
-Etapa 5: ['3', '4', '6']
+Etapa 4: ['4', '3', '1']
 -x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-

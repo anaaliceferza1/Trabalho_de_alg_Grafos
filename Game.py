@@ -43,6 +43,9 @@ class Game:
                         graph.loser = True
                         print("O ladrão escapou pelos portos! O ladrão venceu!")
                         break
+                
+                self.report_example(graph)
+                
             
 
     
@@ -82,11 +85,11 @@ class Game:
                 else:
                     self.criar_relatorio("Fim de Simulação", f)
 
-                print("\n")
+                self.criar_relatorio(print("\n"), f)
 
                 self.criar_relatorio("Caminho percorrido pelo bandido: ", f)
                 self.criar_relatorio("-> ".join(graph.thief_log ), f)
-                print("\n")
+                self.criar_relatorio(print("\n"), f)
 
                 #relatorio policia
                 if graph.police.police_team:
@@ -103,5 +106,5 @@ class Game:
                         if graph.thief_log[p] in positions:
                             self.criar_relatorio(f"\n-> Captura ocorreu na etapa {p} no nó {graph.thief_log[p]}", f)
                             break
-                print("\n")
+                self.criar_relatorio(print("\n"), f)
                 self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
