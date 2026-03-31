@@ -1,7 +1,18 @@
+'''
+
+    A quantidade e as posisoes dos policiais são definidas no arquivo de entreda(.txt)
+    o numero de poliais sao validades em relaçao ao ao grau de entrada dos portos, não podendo ser maior ou igual, pois iria deixar o jogo injusto para o ldao que não teria a posibilidade de fugir.
+    O movimento dos policiais é feito de forma aleatoria em conjunto com o algoritmo de Bellman-Ford, onde os policiais seguem o caminho mais curto ate o ladrao, e caso o ladrao esteja se movendo, os policiais atualizam o caminho a cada passo, garantindo que eles sempre estejam seguindo o caminho mais curto ate o ladrao.
+    Em caso de perseguição, o grafo é invertido para calcular o caminho do ladrao ate o policial, e depois o caminho é invertido para que os policiais possam seguir do policial ate o ladrao, dessa forma otimiza o processo de movimentação dos policiais, evitando que o Bellman-Ford seja chamado para cada policial, o que seria ineficiente, especialmente em grafos grandes.
+
+
+'''
+
 from movement_algorithms.bellman_ford import Bellman_ford 
 import networkx as nx
 import random
 import math
+
 
 
 class Cops:

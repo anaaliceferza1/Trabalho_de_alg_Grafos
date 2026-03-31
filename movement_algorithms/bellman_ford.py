@@ -1,3 +1,7 @@
+'''
+    
+'''
+
 class Bellman_ford():
     '''
     inicializa
