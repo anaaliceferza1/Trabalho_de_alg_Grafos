@@ -81,6 +81,7 @@ class Cops:
                 '''
                 
                 if distances is not None and predecessors is not None:
+                    #retorna do ladao ate o policial
                     path = bf.reconstruct_paths(predecessors, thief_pos ,cop_pos)
                     
                     if path: 

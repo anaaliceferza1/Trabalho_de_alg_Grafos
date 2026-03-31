@@ -120,14 +120,14 @@ class Game:
                     self.criar_relatorio(f"\n-> Número de equipes policiais: {graph.police.police_team}", f)
 
                 #Gente aqui é durante e apenas durante a perseguição
-                # self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
-                # for p, position in enumerate(graph.police_log):
+                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
+                for p, position in enumerate(graph.police_log):
     
-                #     if isinstance(position, list):
-                #         pos_str = ", ".join(position)
-                #     else:
-                #         pos_str = str(position)
-                #     self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                    if isinstance(position, list):
+                        pos_str = ", ".join(position)
+                    else:
+                        pos_str = str(position)
+                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
                 
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
 
