@@ -1,3 +1,14 @@
+'''
+
+    Nessa simulação, a policia e o ladão se movem em um grafo, onde os vértices representam locais e as arestas representam caminhos entre esses locais. 
+    O jogo se inicia com os policiais fazendo as patrulhas tradicionais(andando de 1 em 1 vertice), apois o a primeira patrulha dos policiais, o ladrão faz seu primeiro movimento entrando no local do roubo.A partir disso, a persiguiçao começa, onde a policia entre em modo perseguiçao(andando de 2 em 2 vertices), a policia possui a posiçao do ladão e assim procurnado o menor caminho ate ele.
+    O ladrão tenta escapar para um dos vértices de saída, enquanto a polícia tenta interceptá-lo. 
+    A cada etapa, o ladrão pode escolher um caminho para se mover, vendo os melhores caminhos ate os portos.
+    O jogo continua até que o ladrão seja capturado ou consiga escapar. 
+    Durante a simulação, resgistrado o histórico de movimentos do ladrão e da polícia, bem como o número de etapas necessárias para alcançar ou a vitória ou derrota. 
+    O relatório final inclui informações sobre o resultado do jogo, o número de equipes policiais envolvidas, a sequência de vértices visitados pelo ladrão, o momento da captura (se ocorrer) e o caminho percorrido pelos policiais durante a perseguição.
+
+'''
 from graph.Create_graphos import Dgraphs
 
 class Game:
@@ -5,12 +16,13 @@ class Game:
         self.winner = False
         self.loser = False
         self.steps = 0 
+        self.capture_step = None
 
     def game_simulation(self, graph: Dgraphs):
             '''
                 inicializa historico de passos 
-                Primeiro o ladrao se move
-                Dps o policial se move(entra em perseguição ).
+                Primeiro a policia se move
+                Dps o ladão se move(entra em perseguição ).
                 atualiza historido de passos
                 Dps verificamos se o ladrao foi pego ou se escapou.
 
@@ -31,6 +43,7 @@ class Game:
                     if graph.thief.position in graph.police.positions:
                             self.winner = True
                             print("O ladrão foi pego! A polícia venceu!")
+                            self.capture_step = self.steps
                             break
                 #
                 neigh_free = graph.thief.blockade()
@@ -38,6 +51,7 @@ class Game:
                 if not neigh_free:
                     self.winner = True
                     print(f"O ladrao esta bloqueados e sem nenhum caminho livre. Ele perdeu")
+                    self.capture_step = self.steps
                 #
 
                 clear_path = graph.thief.move()
@@ -45,6 +59,7 @@ class Game:
                 if not clear_path:
                     self.winner = True
                     print("Ladrão sem movimentos possíveis. Foi capturado.")
+                    self.capture_step = self.steps
                     break
 
                 if clear_path:
@@ -83,8 +98,8 @@ class Game:
                 (ok) Caminho percorrido pelos policiais durante a perseguição;
 
                 '''
-
-                self.criar_relatorio("-x-x-x-x--Relatorio--x-x-x-x-",f)
+                print("\n")    
+                self.criar_relatorio("-x-x-x-x-x-x-x--Relatorio--x-x-x-x-x-x-x-\n",f)
 
                 #relatorio ladão
                 if self.loser:
@@ -102,7 +117,7 @@ class Game:
 
                 #relatorio policia
                 if graph.police.police_team:
-                    self.criar_relatorio(f"-> Número de equipes policiais: {graph.police.police_team}", f)
+                    self.criar_relatorio(f"\n-> Número de equipes policiais: {graph.police.police_team}", f)
 
                 #Gente aqui é durante e apenas durante a perseguição
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
@@ -118,6 +133,6 @@ class Game:
                 if self.winner:
                     for p, positions in enumerate(graph.police_log):
                         if graph.thief_log[p] in positions:
-                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {self.steps} no nó {graph.thief_log[p]}", f)
+                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {self.capture_step} no nó {graph.thief_log[p]}\n", f)
                             break
-                self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
+                self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
