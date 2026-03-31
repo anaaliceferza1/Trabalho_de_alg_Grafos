@@ -42,6 +42,7 @@ try:
     g.create_graphs(file_name)
     g.draw_graphs()
     g.show_graph()
+    
     game = Game()
     game.game_simulation(g)
     game.report_example(g)

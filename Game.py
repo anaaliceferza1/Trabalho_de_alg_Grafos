@@ -26,11 +26,12 @@ class Game:
                 graph.police.move(graph.thief.position, perseg) 
 
                 graph.police_log.append(list(graph.police.positions))
-                
-                if graph.police.positions in graph.thief.position:
-                        graph.winner = True
-                        print("O ladrão foi pego! A polícia venceu!")
-                        break
+
+                if perseg:
+                    if graph.thief.position in graph.police.positions:
+                            graph.winner = True
+                            print("O ladrão foi pego! A polícia venceu!")
+                            break
 
                 clear_path = graph.thief.move()
 
@@ -69,6 +70,8 @@ class Game:
                 '''
 
                 self.criar_relatorio("-x-x-x-x--Relatorio--x-x-x-x-",f)
+                print("\n")
+
                 #relatorio ladão
                 if self.winner:
                     self.criar_relatorio("->A fulga foi um sucesso !!!", f)
@@ -79,10 +82,11 @@ class Game:
                 else:
                     self.criar_relatorio("Fim de Simulação", f)
 
+                print("\n")
 
                 self.criar_relatorio("Caminho percorrido pelo bandido: ", f)
                 self.criar_relatorio("-> ".join(graph.thief_log ), f)
-
+                print("\n")
 
                 #relatorio policia
                 if graph.police.police_team:
@@ -99,5 +103,5 @@ class Game:
                         if graph.thief_log[p] in positions:
                             self.criar_relatorio(f"\n-> Captura ocorreu na etapa {p} no nó {graph.thief_log[p]}", f)
                             break
-
+                print("\n")
                 self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
