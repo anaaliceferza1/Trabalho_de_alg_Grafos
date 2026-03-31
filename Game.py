@@ -7,7 +7,7 @@
     O jogo continua até que o ladrão seja capturado ou consiga escapar. 
     Durante a simulação, resgistrado o histórico de movimentos do ladrão e da polícia, bem como o número de etapas necessárias para alcançar ou a vitória ou derrota. 
     O relatório final inclui informações sobre o resultado do jogo, o número de equipes policiais envolvidas, a sequência de vértices visitados pelo ladrão, o momento da captura (se ocorrer) e o caminho percorrido pelos policiais durante a perseguição.
-
+    
 '''
 from graph.Create_graphos import Dgraphs
 
@@ -120,14 +120,26 @@ class Game:
                     self.criar_relatorio(f"\n-> Número de equipes policiais: {graph.police.police_team}", f)
 
                 #Gente aqui é durante e apenas durante a perseguição
-                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
-                for p, position in enumerate(graph.police_log):
+                # self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
+                # for p, position in enumerate(graph.police_log):
     
-                    if isinstance(position, list):
-                        pos_str = ", ".join(position)
-                    else:
-                        pos_str = str(position)
-                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                #     if isinstance(position, list):
+                #         pos_str = ", ".join(position)
+                #     else:
+                #         pos_str = str(position)
+                #     self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                
+                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
+
+                num_police = max(len(etapa) for etapa in graph.police_log)
+
+                for i in range(num_police):
+                    caminho = []
+
+                    for etapa in graph.police_log:
+                        if i < len(etapa):
+                            caminho.append(str(etapa[i]))
+                    self.criar_relatorio(f"Policial {i+1}: " + " -> ".join(caminho), f)
 
                 #relatorio da captura
                 if self.winner:
