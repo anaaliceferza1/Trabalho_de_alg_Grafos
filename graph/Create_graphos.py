@@ -143,38 +143,6 @@ class Dgraphs:
     #     killing_negative_cycles()
     
     
-    def report_example(self):
-        '''
-        Relatório contendo:
-
-        (ok)A informação de que o ladrão escapou ou se foi preso e em quantas etapas;
-
-        Número de equipes de policiais necessários para prender o ladrão, em caso de sucesso;
-
-        Sequência de vértices visitados pelo prisioneiro;
-
-        Se ocorreu, o momento em que os policiais o alcançaram;
-
-        Caminho percorrido pelos policiais durante a perseguição;
-
-        '''
-        print("-x-x-x-x--Relatorio--x-x-x-x-")
-        if self.winner:
-            print("->A fulga foi um sucesso !!!")
-        elif self.loser:
-            print("-> O ladrao foi pego...")
-        else:
-            print("Fim de Simulação")
-        
-        print("Caminho percorrido pelo bandido: ")
-        print("-> ".join(self.thief_log ))
-
-        #Gente aqui é durante e apenas durante a perseguição
-        print("Caminho percorrido pelos policiais: ")
-        for p, position, in enumerate(self.police_log):
-            print(f"Etapa {p}: {position}")
-
-        print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
