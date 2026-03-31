@@ -39,13 +39,13 @@ class Game:
 
                 graph.police_log.append(list(graph.police.positions))
 
-                if perseg:
-                    if graph.thief.position in graph.police.positions:
-                            self.winner = True
-                            print("O ladrão foi pego! A polícia venceu!")
-                            self.capture_step = self.steps
-                            break
-                #
+                if perseg and graph.thief.position in graph.police.positions:
+                    self.winner = True
+                    print("O ladrão foi pego! A polícia venceu!")
+                    self.capture_step = self.steps
+                    break
+                
+                #Nesta etapa ele verifica se há bloqueio em relacão ao ladrao se sim, o ladrão perde
                 neigh_free = graph.thief.blockade()
                 
                 if not neigh_free:
@@ -53,8 +53,9 @@ class Game:
                     print(f"O ladrao esta bloqueados e sem nenhum caminho livre. Ele perdeu")
                     self.capture_step = self.steps
                     break
-                #
-
+                
+                #Apos verificar se ladrão possui caminhos livres, o ladrao pode se mover
+                #Se ele tiver bloqueado apenas por um policia ele perde o turno e nao a
                 clear_path = graph.thief.move()
 
                 if not clear_path:
@@ -62,14 +63,15 @@ class Game:
                     print("Ladrão sem movimentos possíveis.")
                     break
 
-                if clear_path:
-                    graph.thief_log.append(graph.thief.position)
-                    perseg = True
-                    
-                    if graph.thief.position in graph.ports.ports:
-                        self.loser = True
-                        print("O ladrão escapou pelos portos! O ladrão venceu!")
-                        break
+                
+                graph.thief_log.append(graph.thief.position)
+                perseg = True
+                
+
+                if graph.thief.position in graph.ports.ports:
+                    self.loser = True
+                    print("O ladrão escapou pelos portos! O ladrão venceu!")
+                    break
                 
             self.report_example(graph)
                 
