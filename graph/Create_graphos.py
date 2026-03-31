@@ -1,6 +1,5 @@
 import networkx as nx
 import matplotlib
-import numpy as np
 
 from agents.Cops import Cops
 from agents.Robbers import Robber
@@ -152,11 +151,5 @@ class Dgraphs:
         nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels)
         plt.title("Ilha e seus locais")
         plt.show()
-
-    def show_graph(self):
-        print("\nGrafo:")
-        for no in self.graph.nodes():
-            neigh = list(self.graph.successors(no)) 
-            print(f"{no} -> Vizinhos: {neigh}")
             
     
