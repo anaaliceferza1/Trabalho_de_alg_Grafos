@@ -3,6 +3,9 @@
 '''
 
 class Bellman_ford():
+    '''
+    inicializa
+    '''
     def __init__(self, graph):
         self.graph = graph
 

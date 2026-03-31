@@ -22,13 +22,13 @@ class Cops:
         self.police_team = None
 
     def arrest(self, suspect):
-        print(f" Policial prendeu {suspect}.")
+        print(f"->Policial prendeu!! {suspect}.")
 
     def patrol(self):
-        print(f" Policial esta patrulhando a area.")
+        print(f"-> Policial esta patrulhando a area.")
     
     def cops_quantity(self, number):
-        print(f"Policial {number} estao patrulhando.")
+        print(f"->  Policial {number} estao patrulhando.")
 
     def number_of_cops_valid(self, number, entrey_degree):
         cops_needes = number
@@ -41,7 +41,7 @@ class Cops:
             raise ValueError(f"Numero de equipe de policiais necessarios ({cops_needes}) nao pode ser maior que: {roof}.")
         else:
             self.police_team = cops_needes
-            print(f"Numero de equipe de policiais necessarios: {cops_needes}.")
+            print(f"3.  de equipe de policiais necessarios: {cops_needes}.")
         
     #pra salvar oque foi passado no arquivo
     def set_positions(self, positions):
@@ -51,7 +51,7 @@ class Cops:
             self.graph.nodes[c]['agent'] = 'police'
         
         for i, pos in enumerate(self.positions):
-            print(f"Posição do policial {i+1}: {pos}")
+            print(f"-> Posição do policial {i+1}: {pos}")
 
     #movimentacao tanto em patrulha quanto perseguicao
     def move(self, thief_pos, persecution):

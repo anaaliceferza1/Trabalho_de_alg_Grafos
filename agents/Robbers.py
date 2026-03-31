@@ -13,7 +13,7 @@ class Robber:
         self.graph.nodes[start_node]['agent'] = 'thief'
     
     def steal(self):
-        print("O ladrao esta roubando!")
+        print("INICIO DE JOGO: O ladrao esta roubando!")
 
     def move(self):
         bf = Bellman_ford(self.graph)
@@ -21,7 +21,7 @@ class Robber:
         distances, predecessors, _ = bf.alg_bellman_ford(self.position) 
 
         if distances is None or predecessors is None:
-            print("Não foi possível calcular os caminhos mais curtos.")
+            print("ERRO: Não foi possível calcular os caminhos mais curtos.")
             return False
         
         ports = [
@@ -31,7 +31,7 @@ class Robber:
         ]
 
         if not ports:
-            print("Não há portos disponíveis para o ladrão se mover.")
+            print("-> STATUS: Não há portos disponíveis para o ladrão se mover.")
             return False
 
         #antiga forma nao estava alcancado os caminhos globais e testava todos os nos mesmo bloqueado
@@ -78,7 +78,7 @@ class Robber:
         ]
 
         if not free:
-            print("O ladrão não tem para onde fugir. Foi capturado!")
+            print("STATUS -> O ladrão não tem para onde fugir. Foi capturado!")
             return False
         
         return True
