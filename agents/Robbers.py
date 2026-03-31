@@ -49,7 +49,8 @@ class Robber:
             if self.graph.nodes[next_move].get('agent') == 'police':
                 print(f"Caminho para o {port} esta bloqueado.")
                 print(f"O ladrao encontrou um policial em {next_move} e precisa escolher outro caminho.")
-                return False
+                # return False
+                continue
         
             #usamos escolha gulosa onde o pi = igual a menor global dos caminhos
             if best_option is None or distances[port] < best_option[0]:
@@ -79,6 +80,8 @@ class Robber:
         if not free:
             print("O ladrão não tem para onde fugir. Foi capturado!")
             return False
+        
+        return True
 
 
         

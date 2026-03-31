@@ -33,13 +33,13 @@ import os
 
 
 
-file_name = input("Insira o nome do seu arquivo(com '.txt'): ")
-print("Pasta atual:", os.getcwd())
-print("Arquivo existe?", os.path.exists(file_name))
+# file_name = input("Insira o nome do seu arquivo(com '.txt'): ")
+# print("Pasta atual:", os.getcwd())
+# print("Arquivo existe?", os.path.exists(file_name))
 
 try:
     g = Dgraphs()
-    g.create_graphs(file_name)
+    g.create_graphs("teste.txt")
     g.draw_graphs()
     g.show_graph()
 

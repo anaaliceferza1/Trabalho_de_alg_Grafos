@@ -42,6 +42,11 @@ class Game:
 
                 clear_path = graph.thief.move()
 
+                if not clear_path:
+                    self.winner = True
+                    print("Ladrão sem movimentos possíveis. Foi capturado.")
+                    break
+
                 if clear_path:
                     graph.thief_log.append(graph.thief.position)
                     perseg = True
@@ -101,8 +106,13 @@ class Game:
 
                 #Gente aqui é durante e apenas durante a perseguição
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
-                for p, position, in enumerate(graph.police_log):
-                    self.criar_relatorio(f"Etapa {p}: {position}", f)
+                for p, position in enumerate(graph.police_log):
+    
+                    if isinstance(position, list):
+                        pos_str = ", ".join(position)
+                    else:
+                        pos_str = str(position)
+                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
 
                 #relatorio da captura
                 if self.winner:
