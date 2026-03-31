@@ -22,7 +22,7 @@ class Robber:
 
         if distances is None or predecessors is None:
             print("Não foi possível calcular os caminhos mais curtos.")
-            return
+            return False
         
         ports = [
             port for port in self.graph.nodes() 
@@ -32,11 +32,13 @@ class Robber:
 
         if not ports:
             print("Não há portos disponíveis para o ladrão se mover.")
-            return
+            return False
 
-        paths_sorted = sorted(ports, key=lambda p: distances[p])
+        #antiga forma nao estava alcancado os caminhos globais e testava todos os nos mesmo bloqueado
+        #decidimos alterar para pegar um menor global
+        best_option = None
 
-        for port in paths_sorted:
+        for port in ports:
             path = bf.reconstruct_paths(predecessors, self.position, port)
             
             if not path or len(path) <= 1:
@@ -45,18 +47,30 @@ class Robber:
             next_move = path[1] 
             
             if self.graph.nodes[next_move].get('agent') == 'police':
-                print(f"Caminho para o {port} esta bloqueado.\nO ladrao encontrou um policial em {next_move} e precisa escolher outro caminho.")
+                print(f"Caminho para o {port} esta bloqueado.")
+                print("O ladrao encontrou um policial em {next_move} e precisa escolher outro caminho.")
                 continue
-            self.graph.nodes[self.position].pop('agent', None)
+        
+            #usamos escolha gulosa onde o pi = igual a menor global dos caminhos
+            if best_option is None or distances[port] < best_option[0]:
+                best_option = (distances[port], path)
+
+        if best_option:
+            _, path = best_option
+            next_move = path[1]
+
+            if self.graph.nodes[self.position].get('agent') == 'thief':
+                del self.graph.nodes[self.position]['agent']
+            
             self.position = next_move
             self.graph.nodes[self.position]['agent'] = 'thief'
 
             print(f"O ladrao se moveu para {next_move}.")
 
-            return self.position
+            return True
             
         print("Todos os caminhos estão bloqueados. O ladrão perdeu")
-        return None
+        return False
 
 
 
