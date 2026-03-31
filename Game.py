@@ -73,10 +73,10 @@ class Game:
                 print("\n")
 
                 #relatorio ladão
-                if self.winner:
+                if self.loser:
                     self.criar_relatorio("->A fulga foi um sucesso !!!", f)
                     self.criar_relatorio(f"->O ladrão escapou em {self.steps} etapas.", f)
-                elif self.loser:
+                elif self.winner:
                     self.criar_relatorio("-> O ladrao foi pego...", f)
                     self.criar_relatorio(f"->O ladrão foi pego em {self.steps} etapas.", f)
                 else:

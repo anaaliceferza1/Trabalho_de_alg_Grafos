@@ -110,7 +110,7 @@ class Dgraphs:
 
 
         self.thief_log.append(self.thief.position)
-        self.police_log.extend(self.police.positions)
+        self.police_log.extend(list(self.police.positions))
 
 
     def ver_agents_nodes(self):
