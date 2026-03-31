@@ -137,8 +137,6 @@ class Dgraphs:
     #                     self.graph.edges[edge]['weight'] = w
          
     #     killing_negative_cycles()
-    
-    
 
     def draw_graphs(self):
         pos = nx.spring_layout(self.graph, seed=42)
@@ -155,7 +153,6 @@ class Dgraphs:
         plt.title("Ilha e seus locais")
         plt.show()
 
-    
     def show_graph(self):
         print("\nGrafo:")
         for no in self.graph.nodes():
