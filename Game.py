@@ -146,8 +146,8 @@ class Game:
                     if self.winner and p == getattr(self, 'capture_step', -1):
                         self.criar_relatorio(f"O LADRÃO FOI CAPTURADO NO NÓ {thief_pos}!", f)
                 
-                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
-                        pos_str = str(position)
+                    self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
+                    pos_str = str(position)
                     self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
                 
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
