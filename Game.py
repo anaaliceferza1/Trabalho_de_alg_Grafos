@@ -90,8 +90,7 @@ class Game:
     
     def criar_relatorio(self,relatorio, arquivo):
         print(relatorio)
-        arquivo.write(relatorio + "")   
-
+        arquivo.write(relatorio + "\n") 
 
     def report_example(self, graph: Dgraphs):
             with open("Relatorio.txt", "w", encoding="utf-8") as f:
@@ -111,11 +110,11 @@ class Game:
 
                 '''
                 print("")   
-                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--RELATÓRIO--x-x-x-x-x-x-x-]':^50}",f)
+                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x-x-x--RELATÓRIO--x-x-x-x-x-x-x-x-x-]':^45}",f)
 
                 #relatorio ladrão
                 if self.loser:
-                    self.criar_relatorio("STATUS: A fulga foi um sucesso !!!", f)
+                    self.criar_relatorio("STATUS: A fuga foi um sucesso !!!", f)
                     self.criar_relatorio(f"-> O ladrão escapou em {self.steps} etapas.\n", f)
                 elif self.winner:
                     self.criar_relatorio("STATUS: -> O ladrao foi pego...", f)
