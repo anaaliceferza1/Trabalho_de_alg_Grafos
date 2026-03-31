@@ -64,11 +64,11 @@ class Cops:
             #caso roubo ainda nao tiver acontecido
             if not persecution:
                 neighbor = list(self.graph.neighbors(cop_pos)) + list(self.graph.predecessors(cop_pos))
-                
+
                 if neighbor:
                     random_neighbor = random.choice(neighbor)
                     next_move = random_neighbor
-
+            
             #se tiver em perseguiçao
             else:
                 path = None
@@ -77,7 +77,9 @@ class Cops:
                 Isso garante que o policial siga o caminho mais curto ate o ladrao, mesmo que o ladrao esteja se movendo, pois o caminho reconstruido sempre sera atualizado com a posicao atual do ladrao.
                 
                 '''
+                
                 if distances is not None and predecessors is not None:
+                    #retorna do ladao ate o policial
                     path = bf.reconstruct_paths(predecessors, thief_pos ,cop_pos)
                     
                     if path: 
@@ -85,14 +87,18 @@ class Cops:
                         path = path[::-1]  
                 
                 if path and len(path)>1:
-                    step1 = path[1]
-
-                    if step1 == thief_pos:
-                        next_move = step1
-                    elif len(path) > 2:
-                        next_move = path[2]
+                    #step1 = path[1]
+                    
+                    #Tava dando erro em dar dois passos
+                    #if step1 == thief_pos:
+                        #next_move = step1
+                    if len(path) == 2:
+                        next_move = path[1]
                     else:
-                        next_move = step1
+                        #next_move = step1
+                        #usa um minimo
+                        steps = min(2, len(path) - 1)
+                        next_move = path[steps]
 
             new_positions.append(next_move)
 

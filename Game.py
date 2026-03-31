@@ -7,7 +7,7 @@
     O jogo continua até que o ladrão seja capturado ou consiga escapar. 
     Durante a simulação, resgistrado o histórico de movimentos do ladrão e da polícia, bem como o número de etapas necessárias para alcançar ou a vitória ou derrota. 
     O relatório final inclui informações sobre o resultado do jogo, o número de equipes policiais envolvidas, a sequência de vértices visitados pelo ladrão, o momento da captura (se ocorrer) e o caminho percorrido pelos policiais durante a perseguição.
-
+    
 '''
 from graph.Create_graphos import Dgraphs
 
@@ -56,6 +56,7 @@ class Game:
                     print(f"-> O ladrão NÃO tem rotas de fuga disponíveis.")
                     print(" RESULTADO: A polícia venceu por cerco!")
                     self.capture_step = self.steps
+                    break
                 #
 
                 clear_path = graph.thief.move()
@@ -65,6 +66,8 @@ class Game:
                     print("-> Ladrão sem movimentos possíveis.")
                     print(" RESULTADO: O ladrão se rendeu!")
                     self.capture_step = self.steps
+                    # deu problema ele fica impossibilitado de se mover e nem como a policia chegar nele
+                    print("Ladrão sem movimentos possíveis.")
                     break
 
                 if clear_path:
@@ -144,3 +147,25 @@ class Game:
                         self.criar_relatorio(f"O LADRÃO FOI CAPTURADO NO NÓ {thief_pos}!", f)
                 
                 self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
+                        pos_str = str(position)
+                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                
+                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
+
+                num_police = max(len(etapa) for etapa in graph.police_log)
+
+                for i in range(num_police):
+                    caminho = []
+
+                    for etapa in graph.police_log:
+                        if i < len(etapa):
+                            caminho.append(str(etapa[i]))
+                    self.criar_relatorio(f"Policial {i+1}: " + " -> ".join(caminho), f)
+
+                #relatorio da captura
+                if self.winner:
+                    for p, positions in enumerate(graph.police_log):
+                        if graph.thief_log[p] in positions:
+                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {self.capture_step} no nó {graph.thief_log[p]}\n", f)
+                            break
+                self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
