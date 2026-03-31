@@ -6,6 +6,8 @@ from agents.Ports import Port
 
 from movement_algorithms.bellman_ford import Bellman_ford
 
+
+
 import networkx as nx3
 import matplotlib
 import numpy as np
@@ -35,57 +37,18 @@ print("Posiçoes dos policiais\n")
 
 import os
 
-def game_simulation(self):
-    '''
-        inicializa historico de passos 
-        Primeiro o ladrao se move
-        Dps o policial se move(entra em perseguição ).
-        atualiza historido de passos
-        Dps verificamos se o ladrao foi pego ou se escapou.
-
-        '''
-    step = 0
-
-    self.thief_log.append(self.thief.position)
-    self.police_log.append(list(self.police.positions))
-
-    while True:
-        step += 1
-        self.steps = step
-
-        thief_move = self.thief.move()
-
-        if thief_move is not None:
-            self.graph.nodes[self.thief.position]['agent'] = None
-            self.thief.position = thief_move
-            self.graph.nodes[thief_move]['agent'] = 'thief'
-        
-        perseg = True
-
-        self.police.move(self.thief.position, perseg)
-
-        self.thief_log.append(self.thief.position)
-        self.police_log.append(list(self.police.positions))
-        
-        if self.thief.position in self.police.positions:
-            self.loser = True
-            print("O ladrão foi pego! A polícia venceu!")
-            break
-        if self.thief.position in self.ports.ports:
-            self.winner = True
-            print("O ladrão escapou pelos portos! O ladrão venceu!")
-            break
 
 
-file_name = input("Insira o nome do seu arquivo:")
+file_name = input("Insira o nome do seu arquivo(com '.txt'): ")
 print("Pasta atual:", os.getcwd())
-print("Arquivo existe?", os.path.exists("file_name"))
+print("Arquivo existe?", os.path.exists(file_name))
 
 try:
     g = Dgraphs()
     g.create_graphs(file_name)
     g.draw_graphs()
     g.show_graph()
+    g.game_simulation()
 
 except FileNotFoundError:
     print("!Arquivo não encontrado!")

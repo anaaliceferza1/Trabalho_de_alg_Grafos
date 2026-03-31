@@ -197,3 +197,5 @@ class Dgraphs:
         for no in self.graph.nodes():
             neigh = list(self.graph.successors(no)) 
             print(f"{no} -> Vizinhos: {neigh}")
+            
+    

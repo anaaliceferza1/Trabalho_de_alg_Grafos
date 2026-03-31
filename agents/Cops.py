@@ -11,13 +11,13 @@ class Cops:
         self.police_team = None
 
     def arrest(self, suspect):
-        print(f"{self.name} prendeu {suspect}.")
+        print(f" Policial prendeu {suspect}.")
 
     def patrol(self):
-        print(f"{self.name} estah patrulhando a area.")
+        print(f" Policial esta patrulhando a area.")
     
     def cops_quantity(self, number):
-        print(f"{self.name} has {number} estao patrulhando.")
+        print(f"Policial {number} estao patrulhando.")
 
     def number_of_cops_valid(self, number, entrey_degree):
         cops_needes = number
@@ -38,11 +38,25 @@ class Cops:
 
         for c in self.positions:
             self.graph.nodes[c]['agent'] = 'police'
+        
+        for i, pos in enumerate(self.positions):
+            print(f"Posição do policial {i+1}: {pos}")
 
     #movimentacao tanto em patrulha quanto perseguicao
     def move(self, thief_pos, persecution):
         bf = Bellman_ford(self.graph)
         new_positions = []
+
+        '''
+        Interve o grafico, a fim de não calcular o caminho de cada policia ate o ladao mas sim apenas um caminho que chegue ate o ele e depois cada policial segue esse caminho, e com isso otimiza o processo de movimentação dos policiais.
+        Isso evita que o bellman ford seja chamado para cada policial, o que seria ineficiente, especialmente em grafos grandes.
+        '''
+        if persecution:
+            reversed_graph = self.graph.reverse(copy=True)
+            bf = Bellman_ford(reversed_graph)
+
+            distances, predecessors, _ = bf.alg_bellman_ford(thief_pos)
+            
 
         for cop_pos in self.positions:
             next_move = cop_pos  # default 
@@ -57,11 +71,18 @@ class Cops:
 
             #se tiver em perseguiçao
             else:
-                distances, predecessors, _ = bf.alg_bellman_ford(cop_pos)
                 path = None
-
+                '''
+                Como o grafo esta invertido, o caminho reconstruido vai ser do ladrao ate o policial, entao o policial tem que seguir esse caminho de tras pra frente, ou seja, o segundo elemento do caminho é o proximo passo do policial, e se tiver mais de 2 elementos no caminho, o terceiro elemento é o passo seguinte, e assim por diante.
+                Isso garante que o policial siga o caminho mais curto ate o ladrao, mesmo que o ladrao esteja se movendo, pois o caminho reconstruido sempre sera atualizado com a posicao atual do ladrao.
+                
+                '''
                 if distances is not None and predecessors is not None:
-                    path = bf.reconstruct_paths(predecessors, cop_pos, thief_pos)
+                    path = bf.reconstruct_paths(predecessors, thief_pos ,cop_pos)
+                    
+                    if path: 
+                        # Inverte o caminho para seguir do policial ao ladrão
+                        path = path[::-1]  
                 
                 if path and len(path)>1:
                     step1 = path[1]
