@@ -52,14 +52,14 @@ class Game:
                     self.winner = True
                     print(f"O ladrao esta bloqueados e sem nenhum caminho livre. Ele perdeu")
                     self.capture_step = self.steps
+                    break
                 #
 
                 clear_path = graph.thief.move()
 
                 if not clear_path:
-                    self.winner = True
-                    print("Ladrão sem movimentos possíveis. Foi capturado.")
-                    self.capture_step = self.steps
+                    # deu problema ele fica impossibilitado de se mover e nem como a policia chegar nele
+                    print("Ladrão sem movimentos possíveis.")
                     break
 
                 if clear_path:
