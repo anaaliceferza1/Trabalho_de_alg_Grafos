@@ -17,8 +17,8 @@ class Game:
                 '''
             perseg = False
 
-            graph.thief_log.append(graph.thief.position)
-            graph.police_log.append(list(graph.police.positions))
+            # graph.thief_log.append(graph.thief.position)
+            # graph.police_log.append(list(graph.police.positions))
 
             while True:
                 self.steps += 1
@@ -34,11 +34,6 @@ class Game:
                             break
 
                 clear_path = graph.thief.move()
-
-                if clear_path is None:
-                    print("Ladrão não pode se mover. Polícia venceu!")
-                    self.winner = True
-                    break
 
                 if clear_path:
                     graph.thief_log.append(graph.thief.position)
@@ -106,6 +101,6 @@ class Game:
                 if self.winner:
                     for p, positions in enumerate(graph.police_log):
                         if graph.thief_log[p] in positions:
-                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {p} no nó {graph.thief_log[p]}", f)
+                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {self.steps} no nó {graph.thief_log[p]}", f)
                             break
                 self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)

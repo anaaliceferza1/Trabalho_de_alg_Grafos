@@ -2,14 +2,13 @@
 -> O ladrao foi pego...
 ->O ladrão foi pego em 2 etapas.
 Caminho percorrido pelo bandido: 
-0-> 0-> 2
+1-> 3
 -> Número de equipes policiais: 2
 Caminho percorrido pelos policiais: 
-Etapa 0: 1
-Etapa 1: 2
-Etapa 2: ['1', '2']
-Etapa 3: ['3', '0']
-Etapa 4: ['3', '2']
+Etapa 0: 2
+Etapa 1: 3
+Etapa 2: ['1', '4']
+Etapa 3: ['3', '4']
 
--> Captura ocorreu na etapa 2 no nó 2
+-> Captura ocorreu na etapa 2 no nó 3
 -x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
