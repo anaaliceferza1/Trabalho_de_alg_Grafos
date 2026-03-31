@@ -5,7 +5,6 @@ from agents.Cops import Cops
 from agents.Robbers import Robber
 from agents.Ports import Port
 
-from movement_algorithms.bellman_ford import Bellman_ford
 
 matplotlib.use('TkAgg') 
 
