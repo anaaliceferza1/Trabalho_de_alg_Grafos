@@ -32,6 +32,13 @@ class Game:
                             self.winner = True
                             print("O ladrão foi pego! A polícia venceu!")
                             break
+                #
+                neigh_free = graph.thief.blockade()
+                
+                if not neigh_free:
+                    self.winner = True
+                    print(f"O ladrao esta bloqueados e sem nenhum caminho livre. Ele perdeu")
+                #
 
                 clear_path = graph.thief.move()
 
