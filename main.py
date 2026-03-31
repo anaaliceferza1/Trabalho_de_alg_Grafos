@@ -5,6 +5,7 @@ from Game import Game
 import networkx as nx3
 import matplotlib
 import numpy as np
+import os
 matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
@@ -18,19 +19,21 @@ import matplotlib.pyplot as plt
 
 
 # a estrutura do arquivo.
-print("O arquivo tem que esta dentro do mesmo diretorio do main.py:\n")
-print("É esperado que o aquivo tenha apenas numeros e nessa configuração:\n")
-print("Número de vértices |V| = n")
-print("Número de arestas |E| = m")
-print("Lista de arestas no formato: u v w(u, v)")
-print("Vértice do local do roubo")
-print("Vértices de saída da ilha")
-print("Quantidade dos policiais\n ")
-print("Posiçoes dos policiais\n")
+print("\n" + "-"*40)
+print("CONFIGURAÇÃO DO ARQUIVO DE ENTRADA:\n\n")
 
+print("Localização:\nO arquivo tem que esta dentro do mesmo diretorio do main.py:\n")
 
-import os
+print("Formato:\nÉ esperado que o aquivo tenha apenas numeros e nessa configuração:\n")
 
+print("1. Número de vértices |V|")
+print("2. Número de arestas |E|")
+print("3. Lista de arestas: 'u v w'(Origem, Destino, Peso)")
+print("4. Vértice do local do roubo (Inicio do ladrão)")
+print("5. Vértices de saída da ilha (Portos de Fuga)")
+print("6. Quantidade dos policiais ")
+print("7. Posiçoes dos policiais")
+print("\n" + "-"*40)
 
 
 # file_name = input("Insira o nome do seu arquivo(com '.txt'): ")
