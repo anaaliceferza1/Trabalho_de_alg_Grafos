@@ -26,10 +26,6 @@ class Dgraphs:
         self.thief_log =[]
         self.police_log =[]
 
-        self.loser = False
-        self.winner = False
-        self.steps = 0
-
 
     def create_graphs(self, file_name):
         while True:
