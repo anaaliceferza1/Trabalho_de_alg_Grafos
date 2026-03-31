@@ -27,6 +27,8 @@ class Game:
                 Dps verificamos se o ladrao foi pego ou se escapou.
 
                 '''
+            print("-x-x-xINICIANDO SIMULAÇÃO-x-x-x-\n\n")
+
             perseg = False
 
             # graph.thief_log.append(graph.thief.position)
@@ -34,10 +36,11 @@ class Game:
 
             while True:
                 self.steps += 1
+                print(f"\n[ETAPA {self.steps:02d}]")
 
                 graph.police.move(graph.thief.position, perseg) 
-
                 graph.police_log.append(list(graph.police.positions))
+                print(f"POLICIA: moveu-se para {graph.police.positions}")
 
                 if perseg and graph.thief.position in graph.police.positions:
                     self.winner = True
@@ -46,11 +49,12 @@ class Game:
                     break
                 
                 #Nesta etapa ele verifica se há bloqueio em relacão ao ladrao se sim, o ladrão perde
+
                 neigh_free = graph.thief.blockade()
-                
                 if not neigh_free:
                     self.winner = True
-                    print(f"O ladrao esta bloqueados e sem nenhum caminho livre. Ele perdeu")
+                    print(f"-> O ladrão NÃO tem rotas de fuga disponíveis.")
+                    print(" RESULTADO: A polícia venceu por cerco!")
                     self.capture_step = self.steps
                     break
                 
@@ -59,20 +63,26 @@ class Game:
                 clear_path = graph.thief.move()
 
                 if not clear_path:
+                    self.winner = True
+                    print("-> Ladrão sem movimentos possíveis.")
+                    print(" RESULTADO: O ladrão se rendeu!")
+                    self.capture_step = self.steps
                     # deu problema ele fica impossibilitado de se mover e nem como a policia chegar nele
                     print("Ladrão sem movimentos possíveis.")
                     break
 
-                
                 graph.thief_log.append(graph.thief.position)
                 perseg = True
-                
+                print(f"-> LADRÃO: Moveu-se para o nó {graph.thief.position}")
 
                 if graph.thief.position in graph.ports.ports:
                     self.loser = True
-                    print("O ladrão escapou pelos portos! O ladrão venceu!")
+                    print(f" -> O ladrão alcançou o porto {graph.thief.position}.")
+                    print(" RESULTADO: O ladrão escapou com sucesso!")
                     break
-                
+            print("\n")
+            print("-x-x-x-SIMULAÇÃO FINALIZADA-x-x-x\n")
+
             self.report_example(graph)
                 
             
@@ -80,7 +90,7 @@ class Game:
     
     def criar_relatorio(self,relatorio, arquivo):
         print(relatorio)
-        arquivo.write(relatorio + "\n")   
+        arquivo.write(relatorio + "")   
 
 
     def report_example(self, graph: Dgraphs):
@@ -100,36 +110,46 @@ class Game:
                 (ok) Caminho percorrido pelos policiais durante a perseguição;
 
                 '''
-                print("\n")    
-                self.criar_relatorio("-x-x-x-x-x-x-x--Relatorio--x-x-x-x-x-x-x-\n",f)
+                print("")   
+                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--RELATÓRIO--x-x-x-x-x-x-x-]':^50}",f)
 
-                #relatorio ladão
+                #relatorio ladrão
                 if self.loser:
-                    self.criar_relatorio("->A fulga foi um sucesso !!!", f)
-                    self.criar_relatorio(f"->O ladrão escapou em {self.steps} etapas.", f)
+                    self.criar_relatorio("STATUS: A fulga foi um sucesso !!!", f)
+                    self.criar_relatorio(f"-> O ladrão escapou em {self.steps} etapas.\n", f)
                 elif self.winner:
-                    self.criar_relatorio("-> O ladrao foi pego...", f)
-                    self.criar_relatorio(f"->O ladrão foi pego em {self.steps} etapas.", f)
+                    self.criar_relatorio("STATUS: -> O ladrao foi pego...", f)
+                    self.criar_relatorio(f"-> Captura realizada em {self.steps} etapas.\n", f)
                 else:
-                    self.criar_relatorio("Fim de Simulação", f)
-
-
-                self.criar_relatorio("Caminho percorrido pelo bandido: ", f)
-                self.criar_relatorio("-> ".join(graph.thief_log ), f)
+                    self.criar_relatorio(" ->Empate...", f)
 
                 #relatorio policia
-                if graph.police.police_team:
+                if hasattr(graph.police, 'police_team') and graph.police.police_team:
                     self.criar_relatorio(f"\n-> Número de equipes policiais: {graph.police.police_team}", f)
 
-                #Gente aqui é durante e apenas durante a perseguição
-                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
-                for p, position in enumerate(graph.police_log):
-    
-                    if isinstance(position, list):
-                        pos_str = ", ".join(position)
+                self.criar_relatorio("CAMINHO: percorrido pelo bandido: ", f)
+                self.criar_relatorio("-> ".join(graph.thief_log ), f)
+        
+                for p, thief_pos in enumerate(graph.thief_log):
+                    police_positions = graph.police_log[p]
+                    
+                    # Formatação da lista de policiais
+                    if isinstance(police_positions, list):
+                        pos_str = ", ".join(map(str, police_positions))
                     else:
-                        pos_str = str(position)
-                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                        pos_str = str(police_positions)
+                        
+                    # Mostra o que cada um fez na etapa P
+                    log_linha = f"Etapa {p:02d} | Ladrão: {thief_pos} | Policiais: [{pos_str}]"
+                    self.criar_relatorio(log_linha, f)
+
+                    # Se houve vitória e estamos no passo da captura, destaca no log
+                    if self.winner and p == getattr(self, 'capture_step', -1):
+                        self.criar_relatorio(f"O LADRÃO FOI CAPTURADO NO NÓ {thief_pos}!", f)
+                
+                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
+                    #pos_str = str(position)
+                self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
                 
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
 

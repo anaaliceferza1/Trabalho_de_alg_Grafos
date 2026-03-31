@@ -9,7 +9,7 @@ class Port:
     def set_position(self, ports_nodes):
         self.ports = ports_nodes
         
-        print(f"Os portos estão localizados em: {', '.join(self.ports)}.")
+        print(f"\n\status: \n1. Os portos estão localizados em: {', '.join(self.ports)}.")
 
         for port in self.ports:
             self.graph.nodes[port]['agent'] = 'port'
@@ -24,7 +24,7 @@ class Port:
             for _ in self.graph.neighbors(v):
                 entry_edge += 1
         
-        print(f"O grau de entrada dos portos é: {entry_edge}.")
+        print(f"2 .O grau de entrada dos portos é: {entry_edge}.")
 
         return entry_edge
 
