@@ -68,9 +68,12 @@ class Robber:
 
             print(f"O ladrao se moveu para {next_move}.")
             return True
+        
+        return False
 
     def blockade(self):
-        neighbors = list(self.graph.neighbors(self.position))
+        neighbors = list(set(self.graph.neighbors(self.position)) | 
+                     set(self.graph.predecessors(self.position)))
         
         free = [
         v for v in neighbors

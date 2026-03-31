@@ -42,14 +42,14 @@ class Game:
                 graph.police_log.append(list(graph.police.positions))
                 print(f"POLICIA: moveu-se para {graph.police.positions}")
 
-                if perseg:
-                    if graph.thief.position in graph.police.positions:
-                            self.winner = True
-                            print(f"->O ladrão foi pego no nó {graph.thief.position}.")
-                            print("RESULTADO: A polícia venceu!")
-                            self.capture_step = self.steps
-                            break
-                #
+                if perseg and graph.thief.position in graph.police.positions:
+                    self.winner = True
+                    print("O ladrão foi pego! A polícia venceu!")
+                    self.capture_step = self.steps
+                    break
+                
+                #Nesta etapa ele verifica se há bloqueio em relacão ao ladrao se sim, o ladrão perde
+
                 neigh_free = graph.thief.blockade()
                 if not neigh_free:
                     self.winner = True
@@ -57,8 +57,9 @@ class Game:
                     print(" RESULTADO: A polícia venceu por cerco!")
                     self.capture_step = self.steps
                     break
-                #
-
+                
+                #Apos verificar se ladrão possui caminhos livres, o ladrao pode se mover
+                #Se ele tiver bloqueado apenas por um policia ele perde o turno e nao a
                 clear_path = graph.thief.move()
 
                 if not clear_path:
@@ -70,18 +71,18 @@ class Game:
                     print("Ladrão sem movimentos possíveis.")
                     break
 
-                if clear_path:
-                    graph.thief_log.append(graph.thief.position)
-                    perseg = True
-                    print(f"-> LADRÃO: Moveu-se para o nó {graph.thief.position}")
+                graph.thief_log.append(graph.thief.position)
+                perseg = True
+                print(f"-> LADRÃO: Moveu-se para o nó {graph.thief.position}")
 
-                    if graph.thief.position in graph.ports.ports:
-                        self.loser = True
-                        print(f" -> O ladrão alcançou o porto {graph.thief.position}.")
-                        print(" RESULTADO: O ladrão escapou com sucesso!")
-                        break
+                if graph.thief.position in graph.ports.ports:
+                    self.loser = True
+                    print(f" -> O ladrão alcançou o porto {graph.thief.position}.")
+                    print(" RESULTADO: O ladrão escapou com sucesso!")
+                    break
             print("\n")
             print("-x-x-x-SIMULAÇÃO FINALIZADA-x-x-x\n")
+
             self.report_example(graph)
                 
             
@@ -146,9 +147,9 @@ class Game:
                     if self.winner and p == getattr(self, 'capture_step', -1):
                         self.criar_relatorio(f"O LADRÃO FOI CAPTURADO NO NÓ {thief_pos}!", f)
                 
-                    self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
-                    pos_str = str(position)
-                    self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
+                self.criar_relatorio(f"{'[-x-x-x-x-x-x-x--FIM DO RELATÓRIO--x-x-x-x-x-x-x-]':^50}", f)
+                    #pos_str = str(position)
+                self.criar_relatorio(f"Etapa {p}: [{pos_str}]", f)
                 
                 self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
 
