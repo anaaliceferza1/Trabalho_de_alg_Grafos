@@ -1,4 +1,6 @@
-def game_simulation(self):
+from graph.Create_graphos import Dgraphs
+
+def game_simulation(graph: Dgraphs):
         '''
             inicializa historico de passos 
             Primeiro o ladrao se move
@@ -8,30 +10,33 @@ def game_simulation(self):
 
             '''
         step = 0
+        perseg = False
 
-        self.thief_log.append(self.thief.position)
-        self.police_log.append(list(self.police.positions))
+        graph.thief_log.append(graph.thief.position)
+        graph.police_log.append(list(graph.police.positions))
 
         while True:
             step += 1
-            self.steps = step
+            #graph.steps = step
 
-            # thief_move = self.thief.move()
+            #thief_move = graph.thief.move()
 
-            self.thief.move()
+            graph.police.move(graph.thief.position, perseg) 
+            
+            if graph.police.positions in graph.thief.position:
+                    graph.loser = True
+                    print("O ladrão foi pego! A polícia venceu!")
+                    break
+
+            clear_path = graph.thief.move()
             
             perseg = True
 
-            self.police.move(self.thief.position, perseg)
+            graph.thief_log.append(graph.thief.position)
+            graph.police_log.append(list(graph.police.positions))
 
-            self.thief_log.append(self.thief.position)
-            self.police_log.append(list(self.police.positions))
-            
-            if self.thief.position in self.police.positions:
-                self.loser = True
-                print("O ladrão foi pego! A polícia venceu!")
-                break
-            if self.thief.position in self.ports.ports:
-                self.winner = True
-                print("O ladrão escapou pelos portos! O ladrão venceu!")
-                break
+            if clear_path:
+                if graph.thief.position in graph.ports.ports:
+                    graph.winner = True
+                    print("O ladrão escapou pelos portos! O ladrão venceu!")
+                    break

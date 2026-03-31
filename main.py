@@ -6,8 +6,6 @@ from agents.Ports import Port
 
 from movement_algorithms.bellman_ford import Bellman_ford
 
-
-
 import networkx as nx3
 import matplotlib
 import numpy as np
