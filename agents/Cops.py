@@ -65,8 +65,6 @@ class Cops:
             if not persecution:
                 neighbor = list(self.graph.neighbors(cop_pos)) + list(self.graph.predecessors(cop_pos))
 
-                
-                
                 if neighbor:
                     random_neighbor = random.choice(neighbor)
                     next_move = random_neighbor
@@ -88,14 +86,18 @@ class Cops:
                         path = path[::-1]  
                 
                 if path and len(path)>1:
-                    step1 = path[1]
-
-                    if step1 == thief_pos:
-                        next_move = step1
-                    elif len(path) > 2:
-                        next_move = path[2]
+                    #step1 = path[1]
+                    
+                    #Tava dando erro em dar dois passos
+                    #if step1 == thief_pos:
+                        #next_move = step1
+                    if len(path) == 2:
+                        next_move = path[1]
                     else:
-                        next_move = step1
+                        #next_move = step1
+                        #usa um minimo
+                        steps = min(2, len(path) - 1)
+                        next_move = path[steps]
 
             new_positions.append(next_move)
 
