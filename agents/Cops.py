@@ -21,9 +21,7 @@ class Cops:
 
     def number_of_cops_valid(self, number, entrey_degree):
         cops_needes = number
-        #agora so vai validar a quantidade de policiais com base no grau de entrada dos portos e na quantidade de nós do grafo
-        n = len(self.graph.nodes())
-        floor = math.isqrt(n)
+        #agora so vai validar a quantidade de policiais com base no grau de entrada dos portos
         roof = entrey_degree
 
         if cops_needes > roof:
