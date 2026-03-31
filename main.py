@@ -1,10 +1,6 @@
 from graph.Create_graphos import Dgraphs
 
-from agents.Cops import Cops
-from agents.Robbers import Robber
-from agents.Ports import Port
-
-from movement_algorithms.bellman_ford import Bellman_ford
+from Game import Game
 
 import networkx as nx3
 import matplotlib
@@ -46,7 +42,10 @@ try:
     g.create_graphs(file_name)
     g.draw_graphs()
     g.show_graph()
-    g.game_simulation()
+    game = Game()
+    game.game_simulation(g)
+    game.report_example(g)
+    
 
 except FileNotFoundError:
     print("!Arquivo não encontrado!")

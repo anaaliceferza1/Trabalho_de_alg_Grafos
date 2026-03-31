@@ -3,9 +3,10 @@ from graph.Create_graphos import Dgraphs
 class Game:
     def __init__(self):
         self.winner = False
-        self.loser = False 
+        self.loser = False
+        self.steps = 0 
 
-    def game_simulation(graph: Dgraphs):
+    def game_simulation(self, graph: Dgraphs):
             '''
                 inicializa historico de passos 
                 Primeiro o ladrao se move
@@ -14,14 +15,13 @@ class Game:
                 Dps verificamos se o ladrao foi pego ou se escapou.
 
                 '''
-            step = 0
             perseg = False
 
             graph.thief_log.append(graph.thief.position)
             graph.police_log.append(list(graph.police.positions))
 
             while True:
-                step += 1
+                self.steps += 1
 
                 graph.police.move(graph.thief.position, perseg) 
 
@@ -43,38 +43,61 @@ class Game:
                         print("O ladrão escapou pelos portos! O ladrão venceu!")
                         break
             
-                
+
+    
+    def criar_relatorio(self,relatorio, arquivo):
+        print(relatorio)
+        arquivo.write(relatorio + "\n")   
 
 
     def report_example(self, graph: Dgraphs):
-            '''
-            Relatório contendo:
+            with open("Relatorio.txt", "w", encoding="utf-8") as f:
 
-            (ok)A informação de que o ladrão escapou ou se foi preso e em quantas etapas;
+                '''
+                Relatório contendo:
 
-            Número de equipes de policiais necessários para prender o ladrão, em caso de sucesso;
+                (ok)A informação de que o ladrão escapou ou se foi preso e em quantas etapas;
 
-            Sequência de vértices visitados pelo prisioneiro;
+                (ok) Número de equipes de policiais necessários para prender o ladrão, em caso de sucesso;
 
-            Se ocorreu, o momento em que os policiais o alcançaram;
+                (ok) Sequência de vértices visitados pelo ladrão;
 
-            Caminho percorrido pelos policiais durante a perseguição;
+                (ok) Se ocorreu, o momento em que os policiais o alcançaram;
 
-            '''
-            print("-x-x-x-x--Relatorio--x-x-x-x-")
-            if self.winner:
-                print("->A fulga foi um sucesso !!!")
-            elif self.loser:
-                print("-> O ladrao foi pego...")
-            else:
-                print("Fim de Simulação")
-            
-            print("Caminho percorrido pelo bandido: ")
-            print("-> ".join(graph.thief_log ))
+                (ok) Caminho percorrido pelos policiais durante a perseguição;
 
-            #Gente aqui é durante e apenas durante a perseguição
-            print("Caminho percorrido pelos policiais: ")
-            for p, position, in enumerate(graph.police_log):
-                print(f"Etapa {p}: {position}")
+                '''
 
-            print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+                self.criar_relatorio("-x-x-x-x--Relatorio--x-x-x-x-",f)
+                #relatorio ladão
+                if self.winner:
+                    self.criar_relatorio("->A fulga foi um sucesso !!!", f)
+                    self.criar_relatorio(f"->O ladrão escapou em {self.steps} etapas.", f)
+                elif self.loser:
+                    self.criar_relatorio("-> O ladrao foi pego...", f)
+                    self.criar_relatorio(f"->O ladrão foi pego em {self.steps} etapas.", f)
+                else:
+                    self.criar_relatorio("Fim de Simulação", f)
+
+
+                self.criar_relatorio("Caminho percorrido pelo bandido: ", f)
+                self.criar_relatorio("-> ".join(graph.thief_log ), f)
+
+
+                #relatorio policia
+                if graph.police.police_team:
+                    self.criar_relatorio(f"-> Número de equipes policiais: {graph.police.police_team}", f)
+
+                #Gente aqui é durante e apenas durante a perseguição
+                self.criar_relatorio("Caminho percorrido pelos policiais: ", f)
+                for p, position, in enumerate(graph.police_log):
+                    self.criar_relatorio(f"Etapa {p}: {position}", f)
+
+                #relatorio da captura
+                if self.loser:
+                    for p, positions in enumerate(graph.police_log):
+                        if graph.thief_log[p] in positions:
+                            self.criar_relatorio(f"\n-> Captura ocorreu na etapa {p} no nó {graph.thief_log[p]}", f)
+                            break
+
+                self.criar_relatorio("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-", f)
